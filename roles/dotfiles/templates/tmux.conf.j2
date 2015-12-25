@@ -1,0 +1,52 @@
+## XXX help info
+## --------------------------------------------
+## tmux show -g             ## global config
+## tmux show -s             ## server config
+## tmux show -w             ## windows config
+## tmux list-keys           ## key shot
+
+set -g prefix C-l
+set -g base-index 1
+set -g pane-base-index 1
+set -g history-limit 20480
+set -g display-panes-time 1600
+set -g default-terminal "screen-256color"
+## tmux set status-right " "#{=21:pane_title}" %F %H:%M"
+#set -g status-right " "#{=21:pane_title}" %H:%M %F"
+
+setw -g utf8 on
+setw -g mode-keys vi
+
+unbind C-b
+unbind C-l
+
+bind l send-prefix
+bind C-l last-window
+
+unbind %
+unbind '"'
+bind | split-window -h
+bind - split-window -v
+#bind . select-pane -t :.+
+#bind , select-pane -t :.-
+
+unbind &
+bind k confirm kill-window
+bind R source-file ~/.tmux.conf \; display 'Reloaded tmux config.'
+
+## black : colour0 dark colour8 light
+set -g status-bg colour8
+set -g status-fg white
+## status-style would make status bg color be same as terminal bg (trans)
+## bright(bold)
+#set -g status-style bright
+set -g status-style default
+
+set -g status-left-length 80
+set -g status-left ''
+set -g status-right '#[bg=white,fg=colour8] #(cut -d " " -f 1-3 /proc/loadavg) #[default]#[bg=color8,fg=white] %m-%d %H:%M '
+#set -g status-left '#[bg=colour8,fg=white] #(cut -d " " -f 1-3 /proc/loadavg) #[default]'
+#set -g status-right '#[bg=color8]#[fg=white] %m-%d %H:%M #[default]'
+setw -g window-status-format '#[bg=white,fg=black] #I #[bg=colour8,fg=white] #W '
+setw -g window-status-current-format '#[bg=white,fg=black] #I #[bg=white,fg=black] #W '
+

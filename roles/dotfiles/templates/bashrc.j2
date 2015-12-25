@@ -1,0 +1,105 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+[[ -f /etc/bashrc ]] && . /etc/bashrc
+[[ -f /etc/bash_completion ]] && source /etc/bash_completion
+[[ -f ${HOME}/.shrc ]] && source ${HOME}/.shrc
+[[ -f ~/.pythonstartup ]] && export PYTHONSTARTUP=~/.pythonstartup
+#[[ -f ~/.hostname ]] && export HOSTNAME=`cat ~/.hostname`
+
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+#export LC_ALL=en_US.UTF-8
+
+# [ Prompt PS1 ]#{{{
+#--------------------------------------------
+
+function _git_prompt {
+
+    ## XXX 旧版 ( centos 5 ) git 不支持 -u normal 参数
+    local git_status="`LANG=en_US.UTF-8 git status -unormal 2>&1`"
+
+    if ! [[ "$git_status" =~ Not\ a\ git\ repo ]]; then
+        if [[ "$git_status" =~ nothing\ to\ commit ]]; then
+            local ansi=42
+        elif [[ "$git_status" =~ nothing\ added\ to\ commit\ but\ untracked\ files\ present ]]; then
+            local ansi=43
+        else
+            local ansi=45
+        fi
+        if [[ "$git_status" =~ On\ branch\ ([^[:space:]]+) ]]; then
+            branch=${BASH_REMATCH[1]}
+            test "$branch" != master || branch=' '
+        else
+            #branch="(`git branch --no-color 2> /dev/null|cut -d' ' -f2`)"
+            branch="(`git describe --all --contains --abbrev=4 HEAD 2> /dev/null || echo HEAD`)"
+        fi
+        echo -n '\[\e[0;37;'"$ansi"';1m\]'"$branch"'\[\e[0m\]'
+    fi
+}
+
+## XXX 单独使用 PS1，没有调用 PROMPT_COMMAND 函数
+## 1. 不会时事更新 git 信息
+## 2. [?] 是否动态修改 screen 标题栏
+#prompt_str="`_git_prompt`"'\w \n \$ '
+
+# XXX 使用 \[ ... \] 包裹 screen 标题栏的 目录 | vim 等程序才能正常显示
+prompt_str=" \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ "
+
+case "$TERM" in
+    screen*)
+
+        # if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
+        #     PS1_HOSTNAME=
+        # else
+        #     PS1_HOSTNAME="@$HOSTNAME"
+        # fi
+
+        function ssh {
+            # XXX 未知 \134
+            #echo -n -e "\033k@`echo $1|sed 's:.*@::'`\033\134″"
+            echo -n -e "\ek@`echo $1|sed 's:.*@::'`\e\\"
+            ## function rssh
+            rssh "$@"
+        }
+
+        PATHTITLE='\[\ek\W\e\\\]'   # 路径标题
+        PROGRAMTITLE='\[\ek\e\\\]'  # 程序标题
+        prompt_str="${PROGRAMTITLE}${PATHTITLE}${prompt_str}"
+
+        ;;
+    *)
+        ;;
+esac
+
+function _prompt_command {
+    PS1="`_git_prompt`"$prompt_str
+    ## 加粗输入的命令
+    trap 'echo -ne "\e[0m"' DEBUG
+}
+
+PROMPT_COMMAND=_prompt_command
+
+#}}}
+
+# [ history 历史记录 ]# {{{
+#--------------------------------------------
+
+# 去除重复历史记录。bash(1) for more options
+# ... or force ignoredups and ignorespace
+#HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# HISTSIZE 控制历史命令记录的总行数,默认 500
+export HISTSIZE=40960
+#export HISTFILESIZE=2000
+export HISTTIMEFORMAT="%F %T "
+
+# }}}
+
+
+
+
+# vim:set et ft=sh sw=4 sts=4 ts=4 nopaste :

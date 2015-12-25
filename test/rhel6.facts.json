@@ -1,0 +1,448 @@
+"ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "10.13.12.112",
+            "10.14.12.112"
+        ],
+        "ansible_all_ipv6_addresses": [
+            "fe80::72e2:84ff:fe09:b98e",
+            "fe80::72e2:84ff:fe09:b98f"
+        ],
+        "ansible_architecture": "x86_64",
+        "ansible_bios_date": "08/06/2014",
+        "ansible_bios_version": "A1TS79A",
+        "ansible_cmdline": {
+            "KEYBOARDTYPE": "pc",
+            "KEYTABLE": "us",
+            "LANG": "en_US.UTF-8",
+            "SYSFONT": "latarcyrheb-sun16",
+            "crashkernel": "13M@0M",
+            "nomodeset": true,
+            "quiet": true,
+            "rd_LVM_LV": "vgroot/lvroot",
+            "rd_NO_DM": true,
+            "rd_NO_LUKS": true,
+            "rd_NO_MD": true,
+            "ro": true,
+            "root": "/dev/mapper/vgroot-lvroot"
+        },
+        "ansible_date_time": {
+            "date": "2015-12-25",
+            "day": "25",
+            "epoch": "1451034216",
+            "hour": "17",
+            "iso8601": "2015-12-25T09:03:36Z",
+            "iso8601_micro": "2015-12-25T09:03:36.872235Z",
+            "minute": "03",
+            "month": "12",
+            "second": "36",
+            "time": "17:03:36",
+            "tz": "CST",
+            "tz_offset": "+0800",
+            "weekday": "Friday",
+            "year": "2015"
+        },
+        "ansible_default_ipv4": {},
+        "ansible_default_ipv6": {},
+        "ansible_devices": {
+            "sda": {
+                "holders": [],
+                "host": "RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS 2108 [Liberator] (rev 05)",
+                "model": "MR9260-8i",
+                "partitions": {
+                    "sda1": {
+                        "sectors": "409600",
+                        "sectorsize": 512,
+                        "size": "200.00 MB",
+                        "start": "2048"
+                    },
+                    "sda2": {
+                        "sectors": "584431616",
+                        "sectorsize": 512,
+                        "size": "278.68 GB",
+                        "start": "411648"
+                    }
+                },
+                "removable": "0",
+                "rotational": "1",
+                "scheduler_mode": "cfq",
+                "sectors": "584843264",
+                "sectorsize": "512",
+                "size": "278.88 GB",
+                "support_discard": "0",
+                "vendor": "LSI"
+            },
+            "sdb": {
+                "holders": [],
+                "host": "RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS 2108 [Liberator] (rev 05)",
+                "model": "MR9260-8i",
+                "partitions": {
+                    "sdb1": {
+                        "sectors": "1169680384",
+                        "sectorsize": 512,
+                        "size": "557.75 GB",
+                        "start": "4096"
+                    }
+                },
+                "removable": "0",
+                "rotational": "1",
+                "scheduler_mode": "cfq",
+                "sectors": "1169686528",
+                "sectorsize": "512",
+                "size": "557.75 GB",
+                "support_discard": "0",
+                "vendor": "LSI"
+            },
+            "sdc": {
+                "holders": [],
+                "host": "RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS 2108 [Liberator] (rev 05)",
+                "model": "MR9260-8i",
+                "partitions": {
+                    "sdc1": {
+                        "sectors": "584968192",
+                        "sectorsize": 512,
+                        "size": "278.93 GB",
+                        "start": "4096"
+                    }
+                },
+                "removable": "0",
+                "rotational": "1",
+                "scheduler_mode": "cfq",
+                "sectors": "584974336",
+                "sectorsize": "512",
+                "size": "278.94 GB",
+                "support_discard": "0",
+                "vendor": "LSI"
+            },
+            "sdd": {
+                "holders": [],
+                "host": "RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS 2108 [Liberator] (rev 05)",
+                "model": "MR9260-8i",
+                "partitions": {
+                    "sdd1": {
+                        "sectors": "584968192",
+                        "sectorsize": 512,
+                        "size": "278.93 GB",
+                        "start": "4096"
+                    }
+                },
+                "removable": "0",
+                "rotational": "1",
+                "scheduler_mode": "cfq",
+                "sectors": "584974336",
+                "sectorsize": "512",
+                "size": "278.94 GB",
+                "support_discard": "0",
+                "vendor": "LSI"
+            },
+            "sde": {
+                "holders": [],
+                "host": "RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS 2108 [Liberator] (rev 05)",
+                "model": "MR9260-8i",
+                "partitions": {
+                    "sde1": {
+                        "sectors": "584968192",
+                        "sectorsize": 512,
+                        "size": "278.93 GB",
+                        "start": "4096"
+                    }
+                },
+                "removable": "0",
+                "rotational": "1",
+                "scheduler_mode": "cfq",
+                "sectors": "584974336",
+                "sectorsize": "512",
+                "size": "278.94 GB",
+                "support_discard": "0",
+                "vendor": "LSI"
+            },
+            "sdf": {
+                "holders": [],
+                "host": "RAID bus controller: LSI Logic / Symbios Logic MegaRAID SAS 2108 [Liberator] (rev 05)",
+                "model": "MR9260-8i",
+                "partitions": {
+                    "sdf1": {
+                        "sectors": "584968192",
+                        "sectorsize": 512,
+                        "size": "278.93 GB",
+                        "start": "4096"
+                    }
+                },
+                "removable": "0",
+                "rotational": "1",
+                "scheduler_mode": "cfq",
+                "sectors": "584974336",
+                "sectorsize": "512",
+                "size": "278.94 GB",
+                "support_discard": "0",
+                "vendor": "LSI"
+            }
+        },
+        "ansible_distribution": "RedHat",
+        "ansible_distribution_major_version": "6",
+        "ansible_distribution_release": "Santiago",
+        "ansible_distribution_version": "6.5",
+        "ansible_domain": "domain-in.domain",
+        "ansible_env": {
+            "CC": "gcc -std=gnu99",
+            "CVS_RSH": "ssh",
+            "CXX": "g++ -std=gnu++0x",
+            "G_BROKEN_FILENAMES": "1",
+            "HISTTIMEFORMAT": "%Y-%m-%d %H:%M:%S ",
+            "HOME": "/root",
+            "LANG": "en_US.UTF-8",
+            "LC_CTYPE": "en_US.UTF-8",
+            "LESSOPEN": "||/usr/bin/lesspipe.sh %s",
+            "LOADEDMODULES": "",
+            "LOGNAME": "root",
+            "MAIL": "/var/mail/root",
+            "MODULEPATH": "/usr/share/Modules/modulefiles:/etc/modulefiles",
+            "MODULESHOME": "/usr/share/Modules",
+            "PATH": "/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin",
+            "PWD": "/root",
+            "QTDIR": "/usr/lib64/qt-3.3",
+            "QTINC": "/usr/lib64/qt-3.3/include",
+            "QTLIB": "/usr/lib64/qt-3.3/lib",
+            "SHELL": "/bin/bash",
+            "SHLVL": "2",
+            "SSH_CLIENT": "10.14.29.26 43917 22",
+            "SSH_CONNECTION": "10.14.29.26 43917 10.14.12.112 22",
+            "SSH_TTY": "/dev/pts/0",
+            "TERM": "screen-256color",
+            "USER": "root",
+            "_": "/usr/bin/python",
+            "module": "() {  eval `/usr/bin/modulecmd bash $*`\n}"
+        },
+        "ansible_eth0": {
+            "active": true,
+            "device": "eth0",
+            "ipv4": {
+                "address": "10.13.12.112",
+                "netmask": "255.255.252.0",
+                "network": "10.13.12.0"
+            },
+            "ipv6": [
+                {
+                    "address": "fe80::72e2:84ff:fe09:b98e",
+                    "prefix": "64",
+                    "scope": "link"
+                }
+            ],
+            "macaddress": "70:e2:84:09:b9:8e",
+            "module": "igb",
+            "mtu": 1500,
+            "promisc": false,
+            "type": "ether"
+        },
+        "ansible_eth1": {
+            "active": true,
+            "device": "eth1",
+            "ipv4": {
+                "address": "10.14.12.112",
+                "netmask": "255.255.252.0",
+                "network": "10.14.12.0"
+            },
+            "ipv6": [
+                {
+                    "address": "fe80::72e2:84ff:fe09:b98f",
+                    "prefix": "64",
+                    "scope": "link"
+                }
+            ],
+            "macaddress": "70:e2:84:09:b9:8f",
+            "module": "igb",
+            "mtu": 1500,
+            "promisc": false,
+            "type": "ether"
+        },
+        "ansible_fips": false,
+        "ansible_form_factor": "Rack Mount Chassis",
+        "ansible_fqdn": "tc_12_112.domain-in.domain",
+        "ansible_hostname": "tc_12_112",
+        "ansible_interfaces": [
+            "lo",
+            "eth1",
+            "eth0"
+        ],
+        "ansible_kernel": "2.6.32-431.29.2.el6.x86_64",
+        "ansible_lo": {
+            "active": true,
+            "device": "lo",
+            "ipv4": {
+                "address": "127.0.0.1",
+                "netmask": "255.0.0.0",
+                "network": "127.0.0.0"
+            },
+            "ipv6": [
+                {
+                    "address": "::1",
+                    "prefix": "128",
+                    "scope": "host"
+                }
+            ],
+            "mtu": 16436,
+            "promisc": false,
+            "type": "loopback"
+        },
+        "ansible_lsb": {
+            "codename": "Santiago",
+            "description": "Red Hat Enterprise Linux Server release 6.5 (Santiago)",
+            "id": "RedHatEnterpriseServer",
+            "major_release": "6",
+            "release": "6.5"
+        },
+        "ansible_machine": "x86_64",
+        "ansible_machine_id": "75cbcd33417b18ddeca8ebff00000014",
+        "ansible_memfree_mb": 979,
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 51036,
+                "used": 77991
+            },
+            "real": {
+                "free": 979,
+                "total": 129027,
+                "used": 128048
+            },
+            "swap": {
+                "cached": 0,
+                "free": 0,
+                "total": 0,
+                "used": 0
+            }
+        },
+        "ansible_memtotal_mb": 129027,
+        "ansible_mounts": [
+            {
+                "device": "/dev/mapper/vgroot-lvroot",
+                "fstype": "ext4",
+                "mount": "/",
+                "options": "rw",
+                "size_available": 9136574464,
+                "size_total": 10568916992,
+                "uuid": "95915f32-5483-4bfd-a6a2-63113f6ce63f"
+            },
+            {
+                "device": "/dev/sda1",
+                "fstype": "ext3",
+                "mount": "/boot",
+                "options": "rw",
+                "size_available": 131854336,
+                "size_total": 203097088,
+                "uuid": "7973780b-01ee-4587-8b6f-b40c2b800ff6"
+            },
+            {
+                "device": "/dev/mapper/vgroot-lvusr",
+                "fstype": "ext4",
+                "mount": "/usr",
+                "options": "rw",
+                "size_available": 8149938176,
+                "size_total": 10568916992,
+                "uuid": "8b291eb5-3f15-4c3a-a4e3-1cdf94ad10af"
+            },
+            {
+                "device": "/dev/mapper/vgroot-lvvar",
+                "fstype": "ext4",
+                "mount": "/var",
+                "options": "rw",
+                "size_available": 13174685696,
+                "size_total": 15853404160,
+                "uuid": "270f1c53-4121-454c-9373-9560e33237bc"
+            },
+            {
+                "device": "/dev/mapper/vgroot-lvopt",
+                "fstype": "xfs",
+                "mount": "/opt",
+                "options": "rw,noatime,nodiratime,usrquota,grpquota",
+                "size_available": 146444197888,
+                "size_total": 146728960000,
+                "uuid": "ca665466-a769-432c-a781-678c5cd7eacf"
+            },
+            {
+                "device": "/dev/sdb1",
+                "fstype": "xfs",
+                "mount": "/data/base",
+                "options": "rw,noatime,nodiratime",
+                "size_available": 137655234560,
+                "size_total": 598741090304,
+                "uuid": "99cc3063-91fc-4c00-97e4-7fda80dd7410"
+            },
+            {
+                "device": "/dev/sdc1",
+                "fstype": "xfs",
+                "mount": "/data/disk_o",
+                "options": "rw,noatime,nodiratime",
+                "size_available": 213479333888,
+                "size_total": 299368448000,
+                "uuid": "080ffaf3-a621-4bd4-9f05-5e408fb2d0ec"
+            },
+            {
+                "device": "/dev/sdd1",
+                "fstype": "xfs",
+                "mount": "/data/disk_m",
+                "options": "rw,noatime,nodiratime",
+                "size_available": 200555708416,
+                "size_total": 299368448000,
+                "uuid": "ce1063db-5669-4309-8d0a-161720a7b0fa"
+            },
+            {
+                "device": "/dev/sde1",
+                "fstype": "xfs",
+                "mount": "/data/disk_b",
+                "options": "rw,noatime,nodiratime",
+                "size_available": 199632375808,
+                "size_total": 299368448000,
+                "uuid": "15fff015-7da7-4226-b92a-33b8f4c9549c"
+            },
+            {
+                "device": "/dev/sdf1",
+                "fstype": "xfs",
+                "mount": "/data/disk_i",
+                "options": "rw,noatime,nodiratime",
+                "size_available": 202769924096,
+                "size_total": 299368448000,
+                "uuid": "c936cbd6-6d48-4928-bae4-6fd0dc3e2736"
+            }
+        ],
+        "ansible_nodename": "tc_12_112",
+        "ansible_os_family": "RedHat",
+        "ansible_pkg_mgr": "yum",
+        "ansible_processor": [
+            "GenuineIntel",
+            "Intel(R) Xeon(R) CPU E5-2630 v2 @ 2.60GHz",
+            "GenuineIntel",
+            "Intel(R) Xeon(R) CPU E5-2630 v2 @ 2.60GHz",
+            "GenuineIntel",
+            "Intel(R) Xeon(R) CPU E5-2630 v2 @ 2.60GHz"
+        ],
+        "ansible_processor_cores": 6,
+        "ansible_processor_count": 2,
+        "ansible_processor_threads_per_core": 2,
+        "ansible_processor_vcpus": 24,
+        "ansible_product_name": "RD540",
+        "ansible_product_serial": "NB01522553",
+        "ansible_product_uuid": "00981C1E-BA64-E411-9C46-70E2840",
+        "ansible_product_version": "FFFFFFF",
+        "ansible_python_version": "2.6.6",
+        "ansible_selinux": false,
+        "ansible_ssh_host_key_dsa_public": "AAAAB",
+        "ansible_ssh_host_key_rsa_public": "AAAAB",
+        "ansible_swapfree_mb": 0,
+        "ansible_swaptotal_mb": 0,
+        "ansible_system": "Linux",
+        "ansible_system_vendor": "LENOVO",
+        "ansible_user_dir": "/root",
+        "ansible_user_gecos": "root",
+        "ansible_user_gid": 0,
+        "ansible_user_id": "root",
+        "ansible_user_shell": "/bin/bash",
+        "ansible_user_uid": 0,
+        "ansible_userspace_architecture": "x86_64",
+        "ansible_userspace_bits": "64",
+        "ansible_virtualization_role": "NA",
+        "ansible_virtualization_type": "NA",
+        "module_setup": true
+    },
+    "changed": false
+}
+
+

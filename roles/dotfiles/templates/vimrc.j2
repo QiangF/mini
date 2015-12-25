@@ -1,0 +1,38 @@
+set modeline
+set wildmenu
+set wildmode=list:longest
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936,gbk,gb2312,gb18030,big5,euc-jp,euc-kr,latin1
+syntax on
+set t_Co=256
+colorscheme pablo
+"colorscheme xoria256
+set hlsearch
+set cursorline
+set list
+set listchars=tab:\|\ ,trail:·
+set pastetoggle=<f7>
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set nocompatible
+set autoindent
+"set smartindent
+filetype indent on
+autocmd FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
+let mapleader = ","
+let g:mapleader = ","
+noremap <           <gv | vnoremap > >gv
+nnoremap j          gj
+nnoremap k          gk
+nnoremap te         :tabedit 
+nnoremap to         :tabnew<CR>
+nnoremap tc         :tabclose<CR>
+nnoremap tk         :bd<CR>
+nnoremap <F1>       :tabprev<CR>
+nnoremap <F2>       :tabnext<CR>
+nnoremap <leader>w  :up<cr>
+nnoremap <leader>k  :bd<cr>
+nnoremap <leader>q  :q<cr>

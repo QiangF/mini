@@ -1,0 +1,434 @@
+#!/bin/sh
+
+# [ export ENV 环境变量 ]# {{{
+#--------------------------------------------
+
+export PATH=${PATH}:${HOME}/bin/:${HOME}/code/shell
+export CDPATH=.:..:../..:${HOME}
+
+export EDITOR="vi"
+export MYSQL_PS1="[\\u@\\h \\d]"
+
+## psql 替换 more
+export PAGER=less
+export LESS="-R -M --shift 5"   ## gentoo default tmux could clean screen after exit 'man' or 'less'
+#export LESS="-iMSx4 -RFX"      ## XXX -R 参数 gentoo man 手册  ESC[m /etc/env.d/70less
+
+# [ TERM 环境变量 ]
+#--------------------------------------------
+# XXX 在 .Xdefaults 中设置：xterm*termName: xterm-256color
+# 无需在 .bashrc / .zshrc 中同时重复定义 $TERM 污染变量
+
+# [ man 手册 颜色 ]
+#--------------------------------------------
+export LESS_TERMCAP_mb=$'\E[01;31m'   # begin blinking
+export LESS_TERMCAP_md=$'\E[01;31m'   # begin bold
+export LESS_TERMCAP_me=$'\E[0m'       # end mode
+export LESS_TERMCAP_se=$'\E[0m'       # end standout-mode
+export LESS_TERMCAP_so=$'\E[1;33;40m' # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'       # end underline
+export LESS_TERMCAP_us=$'\E[1;32m'    # begin underline
+
+# [ man keychain ]
+#--------------------------------------------
+## XXX 机器重启 ~/.keychain/${HOSTNAME}-sh 文件还在
+[[ -z "$HOSTNAME" ]] && HOSTNAME=`uname -n`
+[[ -f ${HOME}/.keychain/${HOSTNAME}-sh ]] && . $HOME/.keychain/${HOSTNAME}-sh
+[[ -f ${HOME}/.keychain/${HOSTNAME}-sh-gpg ]] && . $HOME/.keychain/${HOSTNAME}-sh-gpg
+
+# }}}
+
+# type -a time
+# whereis time | tr ' ' '\n' | grep bin
+# which time
+
+# [ function ]
+#--------------------------------------------
+
+function kk { keychain --nogui ~/.ssh/id_rsa; }
+function ks { source ~/.keychain/${HOSTNAME}-sh; }
+
+function gitweek {
+    local day=$1
+    if [ -z $day ]
+    then
+        day=7
+    fi
+    for i in `git log -n $day|awk '/commit/{print $2}'`
+    do
+        git show --pretty="format:" --name-only $i
+    done
+}
+
+# [ reference ]
+#--------------------------------------------
+
+# https://github.com/Barrucadu/home/blob/master/config/zsh/functions
+
+# System
+function start()
+{
+    for arg in "${*[@]}"; do
+        sudo /etc/rc.d/$arg start
+    done
+}
+
+function stop()
+{
+    for arg in "${*[@]}"; do
+        sudo /etc/rc.d/$arg stop
+    done
+}
+
+function restart()
+{
+    for arg in "${*[@]}"; do
+        sudo /etc/rc.d/$arg restart
+    done
+}
+
+function reprobe()
+{
+    for arg in "${*[@]}"; do
+        sudo modprobe -r $arg
+        sudo modprobe $arg
+    done
+}
+
+# Running programs
+function r()
+{
+    $* &>/dev/null &
+    disown %%
+}
+
+function re()
+{
+    $* &>/dev/null &
+    disown %%
+    exit
+}
+
+extract () {
+  if [ -f "$1" ] && [ -r "$1" ] ; then
+    case "$1" in
+      (*.tar.bz2|*.tbz2)  tar xjf "$1";;
+      (*.tar.gz|*.tgz)    tar xzf "$1";;
+      (*.bz2)             bunzip2 "$1";;
+      (*.rar)             rar x   "$1";;
+      (*.gz)              gunzip "$1";;
+      (*.tar)             tar xf "$1";;
+      (*.zip)             unzip "$1";;
+      (*.Z)               uncompress "$1";;
+      (*.7z)              7z x "$1";;
+      (*.deb)             sudo dpkg -i "$1";;
+      (*.rpm)             sudo alien -dik "$1";;
+      (*)                 echo "extract: unsupported format $1" ;;
+    esac
+  else
+    echo "extract: file not found or unreadable: $1"
+  fi
+}
+
+function sign ()
+{
+    KEY="$1";
+    KEYSERVER='keyserver.ubuntu.com';
+
+    [[ "$2" != "" ]] && KEYSERVER="$2"
+
+    gpg --keyserver $KEYSERVER --recv-keys $KEY
+    gpg --yes --ask-cert-level --sign-key $KEY
+    gpg --keyserver $KEYSERVER --send-keys $KEY
+}
+
+## 使用 atd 播放提示音，要用到 alsa 声音驱动
+#alarm()
+#{ echo "msg ${argv[2,-1]} && aplay -q ~/.sounds/MACSound/System\ Notifi.wav" | at now + $1 min }
+
+# [ alias ]
+#--------------------------------------------
+
+alias startx='startx &> /dev/shm/startx.log'
+
+# [ cd .. 多级目录回溯 ]
+#--------------------------------------------
+alias  ~='cd ~'
+alias ..="cd .."
+alias ..2="cd ../.."
+alias ..3="cd ../../.."
+alias ..4="cd ../../../.."
+alias ..5="cd ../../../../.."
+
+# [ cp / mv / rm / ln 覆盖提示 ]
+#--------------------------------------------
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -iv --preserve-root'   ## 防止杯具: rm / 下面这几个命令 chgrp chown chmod 也有该参数
+alias ln='ln -iv'
+
+# [ ls ]# 
+#--------------------------------------------
+# XXX [?] 下面的别名都会将 ls 使用上面的代替，无须在重复相应参数
+
+# 系统原生 ls
+alias lls='/bin/ls'
+
+alias l='ls -1X'
+alias la='ls -A'
+alias lx='ls -xX'                                   # x 按行排列，X 按文件扩展名字母顺序排序
+alias ls='ls -Fx --color=auto'                      # 颜色，文件类型标志符，横向排列
+alias lla='ls -Alh --time-style=long-iso'
+
+#alias ll='ls -lh --time-style=+%Y-%m-%d'
+#alias ll='ls -lh --time-style=long-iso'
+
+# XXX 注意，开头的 $ 符号转义: 时间戳 颜色 格式化字符 From : roylez
+# 红蓝 时间戳 高亮
+#alias ll=$'ls -lh --color=auto -X --time-style="+\e[33m| \e[34m%Y-%m-%d \e[33m|\e[m"'
+# 黄色分隔线 分隔时间戳
+alias ll=$'ls -lh --color=auto -X --time-style="+\e[33m|\e[0m %Y-%m-%d \e[33m|\e[0m"'
+# %F %T ==> %Y-%m-%d %H:%M 显示文件修改的准确时间，并按照修改时间排序
+alias lt=$'ls -lht --color=auto -X --time-style="+\e[33m|\e[0m %F %T \e[33m|\e[0m"'
+
+# 同时显示隐藏目录
+#alias ld='ls -d *(-/DN)'
+# From：linuxgem.is-programmer.com/2007/10/4/list-only-directories-and-count-them.5107.html
+
+# 不显示隐藏目录
+alias ld='ls -d */'
+# 显示隐藏目录
+alias lhd='ls -d .*/'
+
+# [ git ]
+#--------------------------------------------
+alias ga='git add'
+alias gc='git commit '
+alias gca='git commit -a -m'
+alias gcl='git config -l'
+alias gce='git config -e'
+alias gd='git diff'
+alias gl='git ls-files'
+alias gs='git status'
+alias gb='git branch'
+alias gbc='git checkout'
+alias gp='git push'
+alias gu='git pull'
+alias gpu='git pull --rebase origin master'
+alias gpo="git push origin master"
+
+# [ system ]
+#--------------------------------------------
+
+alias exit="clear; exit"
+alias grep='grep --color=auto -d skip -iI'
+# less -R 解析 ASCII 颜色字符
+alias less='less -R'
+alias info='info --vi-keys'
+alias tee='tee -a'
+
+# 查看 窗口 class 属性 / 名称 # From : Archwiki Openbox
+alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"NAME\", \"CLASS\""'
+
+#alias tree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
+#alias openports='netstat -nape --inet'
+#alias port='netstat -ntlp'      #opening ports
+
+# From : http://git.sysphere.org/dotfiles/tree/zshrc?h=public
+
+# size 使用 M / G 标记 文件系统类型( ext4 / swap ...)
+alias df="df -hT"
+# XXX -c 参数会递归检索当前目录，特别当前目录有好多文件
+alias du="du -h"
+
+alias psg="ps auxw | grep "
+alias psptree="ps auxwwwf"
+
+# [ soft ]
+#--------------------------------------------
+
+alias c='clear'
+alias tx='tmux -2u'
+
+alias ee='emacsclient -t'
+
+[ -f /usr/bin/gvim ] && alias vim='gvim -v'
+
+# [ archlinux pacman ]# {{{
+#--------------------------------------------
+
+alias P="pacman"
+alias Y="yaourt"
+
+# 在 后面添加 空格，可以实现自动补全
+alias spm='sudo pacman'
+# --need 跳过已经是最新的安装包，不重新安装
+alias pac="sudo pacman -S --need"
+alias pq='pacman -Q '
+alias pi='pacman -Qi '
+alias pl='pacman -Ql '
+alias pm='sudo pacman -Rsun '
+alias pu="sudo pacman -Scc && sudo pacman -Sy && sudo pacman -Su"
+alias py="sudo pacman -Sy"
+
+alias yao="sudo yaourt -S "
+alias ys="yaourt -Ss "
+# 若要实现 yaourt 查询软件包，可以取消注释 /etc/yaourtrc
+# AURUPGRADE=0
+# AURSEARCH=0
+# 使用额外的 --aur 指定查询 AUR 里面的软件包，其他类似 pacman
+alias yq="yaourt -Q "
+alias yu="sudo yaourt -Su"
+alias yy="sudo yaourt -Sy"
+
+# 使用 'pacsearch packagename' 查找pkg，只列出软件包的名称，版本号，没有描述信息
+#alias pacsearch="pacman -Sl | cut -d' ' -f2 | grep "
+
+# pacman 查找 输出彩色
+#alias pacs="pacman -Ss "
+alias pacs="pacsearch"
+pacsearch()
+{
+    echo -e "$(pacman -Ss $@ | sed \
+    -e 's#core/.*#\\033[1;31m&\\033[0;37m#g' \
+    -e 's#extra/.*#\\033[0;32m&\\033[0;37m#g' \
+    -e 's#community/.*#\\033[1;35m&\\033[0;37m#g' \
+    -e 's#^.*/.* [0-9].*#\\033[0;36m&\\033[0;37m#g' )"
+}
+
+## XXX 单行函数格式报错，需要用 ';' 断行
+po() { pacman -Qo `which "$1"`; }
+
+# https://github.com/milomouse/dotfiles/blob/master/zsh/functions
+# check ownership of given argument, as determined by pacman:
+function owns {
+  if [[ -n $(for each in ${PATH//:\\\n}; do find ${each}/$1 2>/dev/null ; done) ]]
+  then pacman -Qo $(which -p $1)
+  else pacman -Qo $1 ; fi
+}
+
+function maintain()
+{
+    # Update
+    sudo pacman -Syu
+    sudo abs
+
+    # Clean
+    sudo pacman -Rsc $(pacman -Qtdq)
+    sudo localepurge
+    sudo pacman -Scc
+
+    # Generale maintenence
+    sudo pacman-optimize
+    sudo mandb
+    sudo ldconfig -v
+    sudo updatedb
+    sudo sync
+}
+
+# }}}
+
+## [ fedora ]#{{{
+##--------------------------------------------
+
+alias vx="vimx"
+#alias vim="vimx"
+
+#}}}
+
+
+## 判断发行版
+if [ -f /etc/arch-release ]
+then
+    export DISTRO='ARCHLINUX'
+elif [ -f /etc/gentoo-release ]
+then
+    export DISTRO='GENTOO'
+fi
+
+
+function mkcd { command mkdir -p "$@" && cd "$@" ;}
+
+function ixio {
+    ## cat - | curl -sF 'f:1=<-' ix.io
+    ## <cmd> |& curl -F 'f:1=<-' ix.io
+    ## lspci -nn |& curl -F 'f:1=<-' ix.io
+    curl -sF 'f:1=<-' http://ix.io/
+}
+
+function elimage {
+    ## XXX 无效
+    ##curl -F "screenshot=@$1" -F 'paste=1' http://paste.ubuntu.org.cn
+    [ -f "$1" ] && curl --compressed -F "name=@$1" http://img.vim-cn.com/ || echo "$1 NOT image file"
+}
+
+
+## http://mjwall.com/blog/2013/10/04/how-i-use-emacs/
+## emacsclient options for reference
+## -a "" starts emacs daemon and reattaches
+## -c creates a new frame
+## -n returns control back to the terminal
+## -e eval the script
+
+## Number of current visible frames, Emacs daemon always has a visible frame called F1
+visible_frames() {
+  emacsclient -a "" -e '(length (visible-frame-list))'
+}
+
+change_focus() {
+  emacsclient -n -e "(select-frame-set-input-focus (selected-frame))" > /dev/null
+}
+
+function ec {
+    # try switching to the frame incase it is just minimized
+    # will start a server if not running
+    test "$(visible_frames)" -eq "1" && change_focus
+
+    if [ "$(visible_frames)" -lt  "2" ]; then # need to create a frame
+    # -c $@ with no args just opens the scratch buffer
+    emacsclient -n -c "$@" && change_focus
+    else # there is already a visible frame besides the daemon, so
+    change_focus
+    # -n $@ errors if there are no args
+    test  "$#" -ne "0" && emacsclient -n "$@"
+    fi
+}
+
+function et {
+    ## ec -e "(message \"Hello\")" > /dev/null
+    exec emacsclient -a "" -t "$@"
+}
+
+server_ok() {
+  emacsclient -a "false" -e "(boundp 'server-process)"
+}
+
+## stop emacs daemon
+function es() {
+    if [ "t" == "$(server_ok)" ]; then
+    echo "Shutting down Emacs server"
+    # wasn't removing emacs from ALT-TAB on mac
+    # emacsclient -e "(server-force-delete)"
+    emacsclient -e '(kill-emacs)'
+    else
+    echo "Emacs server not running"
+    fi
+}
+
+function rssh {
+/usr/bin/ssh -l root -o ConnectTimeout=2 \
+-o ServerAliveInterval=120 \
+-o StrictHostKeyChecking=no \
+-o UserKnownHostsFile=/dev/null "$@"
+}
+
+function nssh {
+#/usr/bin/ssh -C4 \
+/usr/bin/ssh -o ConnectTimeout=2 \
+-o ServerAliveInterval=120 \
+-o StrictHostKeyChecking=no \
+-o UserKnownHostsFile=/dev/null "$@"
+}
+
+
+# vim:set et ft=sh fdm=marker sw=4 sts=4 ts=4 nopaste :
