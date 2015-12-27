@@ -1,0 +1,12 @@
+## *login shells* source order: ~/.bash_profile -> ~/.profile
+## 1. ~/.bash_profile for bash-only ENV, function, alias
+## 2. ~/.profile ~/.shrc for global ENV, function, alias
+## 3. ~/.bashrc only for bash setting
+
+echo "~/.bash_profile" >> /tmp/shell_profle_order
+
+#[[ -f ~/.profile ]] && . ~/.profile
+[[ -f ~/.shrc ]] && . ~/.shrc
+
+## XXX login shell does NOT execute ~/.bashrc but only ~/.profile or ~/.bash_profile
+[[ -f ~/.bashrc ]] && . ~/.bashrc
