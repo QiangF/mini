@@ -26,30 +26,35 @@
   command: tmux -V
   register: tmux_version
   tags:
-    - v
+    - tmux
 
-- debug: var=tmux_version.stdout_lines
-  tags:
-    - v
-- debug: var=tmux_version.stdout.strip()
-  tags:
-    - v
-- debug: var=tmux_version.stdout.strip().split()[1]
-  tags:
-    - v
 - name: Add as Fact for tmux version
   set_fact:
     version: "{{ tmux_version.stdout.strip().split()[1] }}"
   tags:
-    - v
+    - tmux
+
+- debug: var=tmux_version.stdout_lines
+  when: test | default(false) | bool
+  #tags:
+  #  - v
+- debug: var=tmux_version.stdout.strip()
+  when: test | default(false) | bool
+  #tags:
+  #  - v
+- debug: var=tmux_version.stdout.strip().split()[1]
+  when: test | default(false) | bool
+  #tags:
+  #  - v
 - debug: var=version
-  tags:
-    - v
+  when: test | default(false) | bool
+  #tags:
+  #  - v
 
 - name: ~/.tmux.conf
   template: src=tmux.conf.j2 dest={{ test_path }}/tmux.conf backup=yes
   tags:
-    - v
+    - tmux
 
 - name: ~/.pythonstartup
   copy: src=pythonstartup dest={{ test_path }}/pythonstartup
@@ -61,19 +66,10 @@
   tags:
     - script
 
-#- name: ~/.bashrc
-#  template: src=bashrc.j2 dest= backup=yes
-#  when: dev | default(false) | bool
-#  with_items:
-#    - zh_fast_onsum
-#    - zh_inst_onsum
-#  #tags:
-#  #  - dev
-#
 ### XXX test NO BackUp task executed only specify option : -e "test=true"
 #- name:  test config
 #  template: src={{ item.src }} dest={{ item.dest }}
 #  when: test | default(false) | bool
 #  with_items:
-#    - { src: zh.fast.onsum.cfg.j2, dest: /root/zh_fast_onsum.cfg }
-#    - { src: zh.inst.onsum.cfg.j2, dest: /root/zh_inst_onsum.cfg }
+#    - { src: hello.cfg.j2, dest: /root/hello.cfg }
+#    - { src: hello.cfg.j2, dest: /root/hello.cfg }

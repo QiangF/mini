@@ -1,4 +1,3 @@
-#!/bin/sh
 
 # [ man keychain ]
 #--------------------------------------------
@@ -31,7 +30,6 @@ function gitweek {
 
 # [ reference ]
 #--------------------------------------------
-
 
 alias  ~='cd ~'
 alias ..="cd .."
@@ -89,17 +87,16 @@ alias c='clear'
 alias df="df -hT"
 alias du="du -h"
 alias exit="clear; exit"
+alias free="free -t"
 alias grep='grep --color=auto -d skip -iI'
 alias less='less -iR'
 
 # From : http://git.sysphere.org/dotfiles/tree/zshrc?h=public
 
-
 # [ soft ]
 #--------------------------------------------
 
 alias tx='tmux -2u'
-[ -f /usr/bin/gvim ] && alias vim='gvim -v'
 
 {% if ansible_distribution == 'Archlinux' %}
 # [ archlinux pacman ]
@@ -247,11 +244,14 @@ function es() {
     fi
 }
 
+{% if gui is defined %}
 
 # [ Xorg X11 ]
 #--------------------------------------------
 
 alias startx='startx &> /dev/shm/startx.log'
+
+[ -f /usr/bin/gvim ] && alias vim='gvim -v'
 
 # 查看 窗口 class 属性 / 名称 # From : Archwiki Openbox
 alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"NAME\", \"CLASS\""'
@@ -262,6 +262,7 @@ function elimage {
     [ -f "$1" ] && curl --compressed -F "name=@$1" http://img.vim-cn.com/ || echo "$1 NOT image file"
 }
 
+{% endif -%}
 
 
 

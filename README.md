@@ -75,7 +75,15 @@ $ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/p
 
 
 
+# dotfiles
 
+## shell
+
+ssh remote login only souce one of `~/.bash_profile` `~/.profile`
+如果 `~/.bash_profile` `~/.profile` 都存在，只加载 `~/.bash_profile`。
+ssh 登录也不会加载 `~/.bashrc` 需要在 `~/.(bash_)profile` 中 **手动加载** ：
+
+    [ -f ~/.bashrc ] && source ~/.bashrc
 
 
 
