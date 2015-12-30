@@ -1,16 +1,11 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-[[ -f /etc/bashrc ]] && . /etc/bashrc
-[[ -f /etc/bash_completion ]] && source /etc/bash_completion
-[[ -f ~/.pythonstartup ]] && export PYTHONSTARTUP=~/.pythonstartup
-#[[ -f ~/.hostname ]] && export HOSTNAME=`cat ~/.hostname`
+## XXX [?] source them in ~/.bash_profile
+#[[ -f /etc/bashrc ]] && . /etc/bashrc
+#[[ -f /etc/bash_completion ]] && source /etc/bash_completion
 
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-#export LC_ALL=en_US.UTF-8
-
-# [ Prompt PS1 ]#{{{
+# [ PS1 Prompt ]
 #--------------------------------------------
 
 function _git_prompt {
@@ -59,7 +54,7 @@ case "$TERM" in
             #echo -n -e "\033k@`echo $1|sed 's:.*@::'`\033\134″"
             echo -n -e "\ek@`echo $1|sed 's:.*@::'`\e\\"
             ## function rssh
-            rssh "$@"
+            nssh "$@"
         }
 
         PATHTITLE='\[\ek\W\e\\\]'   # 路径标题
@@ -79,9 +74,7 @@ function _prompt_command {
 
 PROMPT_COMMAND=_prompt_command
 
-#}}}
-
-# [ history 历史记录 ]# {{{
+# [ bash-only history ]
 #--------------------------------------------
 
 # 去除重复历史记录。bash(1) for more options
@@ -96,7 +89,6 @@ export HISTSIZE=40960
 #export HISTFILESIZE=2000
 export HISTTIMEFORMAT="%F %T "
 
-# }}}
 
 
 

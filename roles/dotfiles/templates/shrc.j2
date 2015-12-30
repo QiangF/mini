@@ -7,8 +7,6 @@
 [[ -f ${HOME}/.keychain/${HOSTNAME}-sh ]] && . $HOME/.keychain/${HOSTNAME}-sh
 [[ -f ${HOME}/.keychain/${HOSTNAME}-sh-gpg ]] && . $HOME/.keychain/${HOSTNAME}-sh-gpg
 
-# }}}
-
 # type -a time
 # whereis time | tr ' ' '\n' | grep bin
 # which time
@@ -104,7 +102,7 @@ alias tx='tmux -2u'
 [ -f /usr/bin/gvim ] && alias vim='gvim -v'
 
 {% if ansible_distribution == 'Archlinux' %}
-# [ archlinux pacman ]# {{{
+# [ archlinux pacman ]
 #--------------------------------------------
 
 alias P="pacman"
@@ -157,23 +155,24 @@ function owns {
   else pacman -Qo $1 ; fi
 }
 
-# }}}
-{% endif %}
+{% endif -%}
 
 {% if ansible_distribution == 'Fedora' %}
-## [ fedora ]#{{{
+## [ fedora ]
 ##--------------------------------------------
 
 alias vx="vimx"
 #alias vim="vimx"
 
-#}}}
-{% endif %}
+{% endif -%}
 
 function mkcd { command mkdir -p "$@" && cd "$@" ;}
 
+## https://wiki.gentoo.org/wiki/Bash
+## command -pv cmd ==> type -a cmd
+## command cmd -> /usr/bin/ssh or `\cmd` or `"cmd"`
 function rssh {
-/usr/bin/ssh -l root -o ConnectTimeout=2 \
+command ssh -l root -o ConnectTimeout=2 \
 -o ServerAliveInterval=120 \
 -o StrictHostKeyChecking=no \
 -o UserKnownHostsFile=/dev/null "$@"
@@ -181,7 +180,7 @@ function rssh {
 
 function nssh {
 #/usr/bin/ssh -C4 \
-/usr/bin/ssh -o ConnectTimeout=2 \
+command ssh -o ConnectTimeout=2 \
 -o ServerAliveInterval=120 \
 -o StrictHostKeyChecking=no \
 -o UserKnownHostsFile=/dev/null "$@"
@@ -193,7 +192,6 @@ function ixio {
     ## lspci -nn |& curl -F 'f:1=<-' ix.io
     curl -sF 'f:1=<-' http://ix.io/
 }
-
 
 alias ee='emacsclient -t'
 

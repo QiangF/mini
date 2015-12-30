@@ -1,12 +1,9 @@
-## *login shells* source order: ~/.bash_profile -> ~/.profile
-## 1. ~/.bash_profile for bash-only ENV, function, alias
-## 2. ~/.profile ~/.shrc for global ENV, function, alias
-## 3. ~/.bashrc only for bash setting
+## *login shells* only source one of : ~/.bash_profile or ~/.profile
 
-echo "~/.bash_profile" >> /tmp/shell_profle_order
-
-#[[ -f ~/.profile ]] && . ~/.profile
+## XXX NOT auto source ~/.profile
+[[ -f ~/.profile ]] && . ~/.profile
 [[ -f ~/.shrc ]] && . ~/.shrc
+[[ -f /etc/bash_completion ]] && source /etc/bash_completion
 
 ## XXX login shell does NOT execute ~/.bashrc but only ~/.profile or ~/.bash_profile
 [[ -f ~/.bashrc ]] && . ~/.bashrc

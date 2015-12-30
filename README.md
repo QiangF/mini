@@ -43,8 +43,35 @@ echo 'localhost' >> ~/server/hostfile
 }
 ```
 
+## gentoo
 
+```
+$ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/python2' -m setup|grep Gentoo
+"ansible_distribution": "Gentoo", 
+"ansible_os_family": "Gentoo", 
+```
 
+## centos 7
+
+```
+$ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/python2' -m setup|egrep -i 'distribution|os_family'
+"ansible_distribution": "CentOS", 
+"ansible_distribution_major_version": "7", 
+"ansible_distribution_release": "Core", 
+"ansible_distribution_version": "7.2.1511", 
+"ansible_os_family": "RedHat",
+```
+
+## fedora 23
+
+```
+$ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/python2' -m setup|egrep -i 'distribution|os_family'
+"ansible_distribution": "Fedora", 
+"ansible_distribution_major_version": "23", 
+"ansible_distribution_release": "Twenty Three", 
+"ansible_distribution_version": "23", 
+"ansible_os_family": "RedHat", 
+```
 
 
 

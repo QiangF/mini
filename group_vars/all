@@ -1,0 +1,10 @@
+---
+test_path : ~/dotfiles
+conf_path : "~"
+dot_dict:
+  profile: "~/.profile"
+  shell: "~/.shrc"
+  bash_profile: "~/.bash_profile"
+#  bash: ~/.bashrc
+#  tmux: ~/.tmux.conf
+#  python: ~/.pythonstartup
