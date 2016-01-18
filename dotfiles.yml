@@ -1,5 +1,5 @@
 ---
-- hosts: locahost
+- hosts: local
   gather_facts: yes
   any_errors_fatal: true
 #  remote_user: root

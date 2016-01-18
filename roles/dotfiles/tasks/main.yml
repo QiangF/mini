@@ -22,6 +22,27 @@
   tags:
     - vim
 
+- name: Check emacs verson
+  shell: emacs --version|head -n 1|awk '{print $3}'
+  register: emacs_version
+  tags:
+    - emacs
+
+- debug: var=emacs_version.stdout_lines
+  when: test | default(false) | bool
+  tags:
+    - emacs
+
+- debug: var=emacs_version.stdout.strip()
+  when: test | default(false) | bool
+  tags:
+    - emacs
+
+- name: ~/.emacs
+  template: src=emacs.j2 dest={{ test_path }}/emacs backup=yes
+  tags:
+    - emacs
+
 - name: Check tmux verson
   command: tmux -V
   register: tmux_version
@@ -59,7 +80,7 @@
 - name: ~/.pythonstartup
   copy: src=pythonstartup dest={{ test_path }}/pythonstartup
   tags:
-    - python
+    - pystartup
 
 - name: ~/dotfiles/create.links.sh
   copy: src=create.links.sh dest={{ test_path }}/create.links.sh

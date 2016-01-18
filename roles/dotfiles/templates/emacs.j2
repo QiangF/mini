@@ -1,0 +1,162 @@
+;; -*- mode: emacs-lisp -*-
+
+{#-
+RHEL6: GNU Emacs 23.1.1
+RHEL7: GNU Emacs 24.3.1
+#}
+
+{%- set ev = emacs_version.stdout.strip()[0] %}
+
+;; TODO
+;; default Nonincremental Search
+
+;; emacs -q --load path-to-custom-init.el
+
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html
+;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Backspace-invokes-help.html
+(global-set-key [?\C-h] 'delete-backward-char) ;; C-M-backsppace --> C-M-h
+(global-set-key [f1] 'help-command)
+(global-set-key (kbd "C-\\") 'set-mark-command)
+
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Major-Modes.html
+(setq initial-major-mode 'text-mode)
+(setq-default major-mode 'text-mode)
+(setq-default make-backup-files nil)
+(setq-default show-trailing-whitespace t) ;; M-x whitespace-mode
+
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+(setq indent-line-function 'insert-tab)
+;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
+
+;; minor mode
+(global-auto-revert-mode 1)
+(blink-cursor-mode 0)
+(menu-bar-mode 0)
+(line-number-mode 1)
+(column-number-mode 1)
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+(setq show-paren-style 'parentheses)
+
+;; 避免帮助文档变为中文，即使 LANG=zh_CN.UTF-8 环境变量运行 emacs
+;; C-x <RET> l 补全变量取值 或 查看 var: language-info-alist 语言列表
+;(set-language-environment 'UTF-8)
+(set-language-environment 'English)
+
+;; FUCK all NO UTF-8 coding...
+(setq locale-coding-system 'utf-8)
+(set-coding-system-priority 'utf-8 'gbk 'gb2312)
+(set-default-coding-systems 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-file-name-coding-system 'utf-8)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; http://www.emacswiki.org/emacs/WinnerMode
+;; restore windows layout : C-c ←
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
+
+;; hook
+;; --------------------------------------------
+
+;(add-hook 'text-mode-hook (lambda () (setq indent-tabs-mode nil)))
+
+(defun my-c-mode-config ()
+  (whitespace-mode 1)
+  (setq indent-tabs-mode t
+	tab-width        4
+	c-basic-offset   4))
+
+(add-hook 'c-mode-hook 'my-c-mode-config)
+
+;; (eval-after-load "cc-mode"
+;;   '(define-key c-mode-map (kbd "TAB") 'self-insert-command))
+
+;; (defun custom-js-mode ()
+;;   "js-mode-hook"
+;;   (setq js-indent-level 2))
+
+;; (add-hook 'js-mode-hook 'custom-js-mode)
+
+;; http://www.emacswiki.org/emacs/EmacsLispMode
+(add-hook 'emacs-lisp-mode-hook
+  (lambda ()
+    (setq tab-width 2)
+    ;; Keep M-TAB for `completion-at-point'
+    (define-key flyspell-mode-map "\M-\t" nil)
+    ;; Pretty-print eval'd expressions.
+    (define-key emacs-lisp-mode-map
+      "\C-x\C-e" 'pp-eval-last-sexp)
+    ;; Recompile if .elc exists.
+    (add-hook (make-local-variable 'after-save-hook)
+      (lambda ()
+        (byte-force-recompile default-directory)))
+    (define-key emacs-lisp-mode-map
+      "\r" 'reindent-then-newline-and-indent)))
+
+
+;; theme GUI font ...
+;; --------------------------------------------
+
+{% if emacs_version | version_compare('24.1.1', '>=') %}
+(electric-pair-mode 1)
+(load-theme 'wombat t)
+{% endif %}
+
+;; GUI 配置放在后面，避免 color theme 主题里面自带的配置覆盖
+(defun customize-gui-setting ()
+  ;; http://stackoverflow.com/questions/5795451/how-to-detect-that-emacs-is-in-terminal-mode
+  (when (display-graphic-p)
+    "setting for emacs GUI mode"
+    (scroll-bar-mode 0)
+    (tool-bar-mode 0)
+    (load-theme 'solarized-light t)
+    ;; 取消 mode-line 状态栏 status bar 3D 样式。放在 theme 前会被主题样式覆盖
+    ;; http://www.svenhartenstein.de/Software/Emacs
+    ;; http://ldc.usb.ve/docs/emacs/Optional-Mode-Line.html
+    (set-face-attribute 'mode-line nil :box nil)
+    (set-face-attribute 'mode-line-inactive nil :box nil)
+    (set-face-attribute 'mode-line-highlight nil :box nil
+                        :background "light sky blue"
+                        :weight 'bold)
+    ;; 只显示一侧 fringe
+    ;;(set-fringe-style '(8 . 0))
+    ;; 窗口 "位置 position" (top left) "大小 size" (height width)
+    (setq default-frame-alist '((top . 80) (left . 80) (height . 37) (width . 100)))
+    ;; 等宽：中文字体 == 2 个英文字体
+    ;; http://donneryst.com/blog/emacs中达成中英文混排表格对齐效果.html
+    ;; Dejavu Sans Mono 10 文泉驿等宽微米黑 12
+    ;; Envy Code R 11 文泉驿等宽微米黑 12
+    ;;(set-default-font "Dejavu Sans Mono 10:bold")
+    (set-fontset-font "fontset-default" 'unicode "WenQuanyi Micro Hei Mono 12")
+    ;; (add-to-list 'default-frame-alist '(font . "Envy Code R-11:weight=bold:antialias=0"))
+    (add-to-list 'default-frame-alist '(font . "Envy Code R-11"))
+    ;; Prelude config: display file path as GUI window(frame) title
+    (setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+    )
+
+)
+
+;; 前面一串"(if...lambda...(with-select-frame frame ())...)" 是个很好的函数框架
+;; 是指 frame 创建后载入，用这个框架可以解决 --daemon 启动的问题
+
+(if (and (fboundp 'daemonp) (daemonp))
+  (add-hook 'after-make-frame-functions
+    (lambda (frame)
+      (with-selected-frame frame
+        (customize-gui-setting)
+        )
+      )
+    )
+  (customize-gui-setting)
+)
