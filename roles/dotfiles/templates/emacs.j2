@@ -9,6 +9,8 @@ RHEL7: GNU Emacs 24.3.1
 
 ;; TODO
 ;; default Nonincremental Search
+;; C-x C-f no default path
+;; swap windows layout
 
 ;; emacs -q --load path-to-custom-init.el
 
@@ -17,9 +19,11 @@ RHEL7: GNU Emacs 24.3.1
 (global-set-key [?\C-h] 'delete-backward-char) ;; C-M-backsppace --> C-M-h
 (global-set-key [f1] 'help-command)
 (global-set-key (kbd "C-\\") 'set-mark-command)
+(global-set-key "\C-cd" 'kill-whole-line)
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
+(setq ediff-split-window-function 'split-window-horizontally) ;; '|' key swap horizontal <-> vertical
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Major-Modes.html
 (setq initial-major-mode 'text-mode)
 (setq-default major-mode 'text-mode)
@@ -32,7 +36,9 @@ RHEL7: GNU Emacs 24.3.1
 ;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
 
 ;; minor mode
+(global-hl-line-mode 1)
 (global-auto-revert-mode 1)
+(scroll-lock-mode 0)
 (blink-cursor-mode 0)
 (menu-bar-mode 0)
 (line-number-mode 1)
@@ -62,6 +68,39 @@ RHEL7: GNU Emacs 24.3.1
 ;; restore windows layout : C-c ←
 (when (fboundp 'winner-mode)
   (winner-mode 1))
+
+
+;; function
+;; --------------------------------------------
+
+;; http://stackoverflow.com/questions/3669511/the-function-to-show-current-files-full-path-in-mini-buffer
+(defun show-file-name ()
+  "Show the full path file name in  minibuffer, and copy file name to kill ring."
+  (interactive)
+  (message (buffer-file-name))
+  (kill-new (file-truename buffer-file-name))
+  )
+(global-set-key "\C-cz" 'show-file-name)
+
+;; http://emacs.stackexchange.com/questions/2347/kill-or-copy-current-line-with-minimal-keystrokes
+(defun mark-whole-line ()
+  "Combinition of C-a, mark, C-e"
+  (interactive)
+  (move-beginning-of-line nil)
+  (set-mark-command nil)
+  (move-end-of-line nil)
+  )
+;; C-2 NOT work under terminal
+(global-set-key (kbd "C-c 2") 'mark-whole-line)
+
+;; thanks b4283@emacs-tw https://gist.github.com/403ff42ede3360a20b4a
+(defun comment-toggle-current-line ()
+  "comment or uncomment current line"
+  (interactive)
+  (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
+
+(global-set-key (kbd "M-[") 'comment-toggle-current-line)
+
 
 ;; hook
 ;; --------------------------------------------
@@ -139,6 +178,7 @@ RHEL7: GNU Emacs 24.3.1
     ;; (add-to-list 'default-frame-alist '(font . "Envy Code R-11:weight=bold:antialias=0"))
     (add-to-list 'default-frame-alist '(font . "Envy Code R-11"))
     ;; Prelude config: display file path as GUI window(frame) title
+    ;; http://emacsredux.com/blog/2013/04/07/display-visited-files-path-in-the-frame-title/
     (setq frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
