@@ -65,20 +65,12 @@ alias lt=$'ls -lht --color=auto -X --time-style="+\e[33m|\e[0m %F %T \e[33m|\e[0
 
 # [ git ]
 #--------------------------------------------
-alias ga='git add'
-alias gc='git commit '
+alias gst='git status'
 alias gca='git commit -a -m'
-alias gcl='git config -l'
 alias gce='git config -e'
-alias gd='git diff'
-alias gl='git ls-files'
-alias gs='git status'
-alias gb='git branch'
-alias gbc='git checkout'
-alias gp='git push'
-alias gu='git pull'
-alias gpu='git pull --rebase origin master'
+alias gcl='git config -l'
 alias gpo="git push origin master"
+alias gpu='git pull --rebase origin master'
 
 # [ system ]
 #--------------------------------------------
@@ -90,13 +82,6 @@ alias exit="clear; exit"
 alias free="free -t"
 alias grep='grep --color=auto -d skip -iI'
 alias less='less -iR'
-
-# From : http://git.sysphere.org/dotfiles/tree/zshrc?h=public
-
-# [ soft ]
-#--------------------------------------------
-
-alias tx='tmux -2u'
 
 {% if ansible_distribution == 'Archlinux' %}
 # [ archlinux pacman ]
@@ -159,7 +144,6 @@ function owns {
 ##--------------------------------------------
 
 alias vx="vimx"
-#alias vim="vimx"
 
 {% endif -%}
 
@@ -169,7 +153,7 @@ function mkcd { command mkdir -p "$@" && cd "$@" ;}
 ## command -pv cmd ==> type -a cmd
 ## command cmd -> /usr/bin/ssh or `\cmd` or `"cmd"`
 function rssh {
-command ssh -l root -o ConnectTimeout=2 \
+command ssh -l root –o UseRoaming=no -o ConnectTimeout=2 \
 -o ServerAliveInterval=120 \
 -o StrictHostKeyChecking=no \
 -o UserKnownHostsFile=/dev/null "$@"
@@ -177,7 +161,7 @@ command ssh -l root -o ConnectTimeout=2 \
 
 function nssh {
 #/usr/bin/ssh -C4 \
-command ssh -o ConnectTimeout=2 \
+command ssh –o UseRoaming=no -o ConnectTimeout=2 \
 -o ServerAliveInterval=120 \
 -o StrictHostKeyChecking=no \
 -o UserKnownHostsFile=/dev/null "$@"
@@ -189,58 +173,30 @@ function ixio {
     ## lspci -nn |& curl -F 'f:1=<-' ix.io
     curl -sF 'f:1=<-' http://ix.io/
 }
+# [ soft ]
+#--------------------------------------------
 
-alias ee='emacsclient -t'
+alias tx='tmux -2u'
 
-## http://mjwall.com/blog/2013/10/04/how-i-use-emacs/
-## emacsclient options for reference
-## -a "" starts emacs daemon and reattaches
-## -c creates a new frame
-## -n returns control back to the terminal
-## -e eval the script
-
-## Number of current visible frames, Emacs daemon always has a visible frame called F1
-visible_frames() {
-  emacsclient -a "" -e '(length (visible-frame-list))'
-}
-
-change_focus() {
-  emacsclient -n -e "(select-frame-set-input-focus (selected-frame))" > /dev/null
+function ee {
+    ## terminal
+    emacsclient -a "" -t "$@"
 }
 
 function ec {
-    # try switching to the frame incase it is just minimized
-    # will start a server if not running
-    test "$(visible_frames)" -eq "1" && change_focus
-
-    if [ "$(visible_frames)" -lt  "2" ]; then # need to create a frame
-    # -c $@ with no args just opens the scratch buffer
-    emacsclient -n -c "$@" && change_focus
-    else # there is already a visible frame besides the daemon, so
-    change_focus
-    # -n $@ errors if there are no args
-    test  "$#" -ne "0" && emacsclient -n "$@"
-    fi
+    ## GUI
+    emacsclient -a "" -nc "$@"
 }
 
-function et {
-    ## ec -e "(message \"Hello\")" > /dev/null
-    exec emacsclient -a "" -t "$@"
-}
-
-server_ok() {
-  emacsclient -a "false" -e "(boundp 'server-process)"
-}
-
-## stop emacs daemon
-function es() {
+function es {
+    ## http://mjwall.com/blog/2013/10/04/how-i-use-emacs/
+    ## stop emacs daemon
+    server_ok=`emacsclient -a "false" -e "(boundp 'server-process)"`
     if [ "t" == "$(server_ok)" ]; then
-    echo "Shutting down Emacs server"
-    # wasn't removing emacs from ALT-TAB on mac
-    # emacsclient -e "(server-force-delete)"
-    emacsclient -e '(kill-emacs)'
+        echo "Shutting down Emacs server"
+        emacsclient -e '(kill-emacs)'
     else
-    echo "Emacs server not running"
+        echo "Emacs server not running"
     fi
 }
 

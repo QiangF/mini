@@ -14,12 +14,7 @@ RHEL7: GNU Emacs 24.3.1
 
 ;; emacs -q --load path-to-custom-init.el
 
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html
-;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Backspace-invokes-help.html
-(global-set-key [?\C-h] 'delete-backward-char) ;; C-M-backsppace --> C-M-h
-(global-set-key [f1] 'help-command)
-(global-set-key (kbd "C-\\") 'set-mark-command)
-(global-set-key "\C-cd" 'kill-whole-line)
+
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
@@ -28,10 +23,13 @@ RHEL7: GNU Emacs 24.3.1
 (setq initial-major-mode 'text-mode)
 (setq-default major-mode 'text-mode)
 (setq-default make-backup-files nil)
+(setq-default echo-keystrokes 0.1)
+(setq-default vc-follow-symlinks t)
 (setq-default show-trailing-whitespace t) ;; M-x whitespace-mode
-
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
+;; (setq-default whitespace-style '(trailing space-before-tab indentation
+;;                                           space-after-tab tabs tab-mark)
 (setq indent-line-function 'insert-tab)
 ;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
 
@@ -80,7 +78,6 @@ RHEL7: GNU Emacs 24.3.1
   (message (buffer-file-name))
   (kill-new (file-truename buffer-file-name))
   )
-(global-set-key "\C-cz" 'show-file-name)
 
 ;; http://emacs.stackexchange.com/questions/2347/kill-or-copy-current-line-with-minimal-keystrokes
 (defun mark-whole-line ()
@@ -90,8 +87,6 @@ RHEL7: GNU Emacs 24.3.1
   (set-mark-command nil)
   (move-end-of-line nil)
   )
-;; C-2 NOT work under terminal
-(global-set-key (kbd "C-c 2") 'mark-whole-line)
 
 ;; thanks b4283@emacs-tw https://gist.github.com/403ff42ede3360a20b4a
 (defun comment-toggle-current-line ()
@@ -99,7 +94,25 @@ RHEL7: GNU Emacs 24.3.1
   (interactive)
   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
 
-(global-set-key (kbd "M-[") 'comment-toggle-current-line)
+
+
+;; hotkey
+;; --------------------------------------------
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html
+;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Backspace-invokes-help.html
+
+(global-set-key [?\C-h] 'delete-backward-char) ;; C-M-backsppace --> C-M-h
+(global-set-key [f1] 'help-command)
+(global-set-key (kbd "C-\\") 'set-mark-command)
+(global-set-key "\C-c2" 'mark-whole-line) ;; C-2 NOT work under terminal
+(global-set-key "\C-cd" 'kill-whole-line) ;; C-S-backspace NOT work under terminal
+(global-set-key "\C-cz" 'show-file-name)
+(global-set-key "\M-[" 'comment-toggle-current-line)
+(global-set-key (kbd "C-;") 'comment-toggle-current-line)
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c y") 'bury-buffer)
+(global-set-key (kbd "C-c r") 'revert-buffer)
+(global-set-key "\r" 'newline-and-indent)
 
 
 ;; hook
@@ -107,11 +120,11 @@ RHEL7: GNU Emacs 24.3.1
 
 ;(add-hook 'text-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
-(defun my-c-mode-config ()
-  (whitespace-mode 1)
-  (setq indent-tabs-mode t
-	tab-width        4
-	c-basic-offset   4))
+;; (defun my-c-mode-config ()
+;;   (whitespace-mode 1)
+;;   (setq indent-tabs-mode t
+;;   tab-width        4
+;;   c-basic-offset   4))
 
 (add-hook 'c-mode-hook 'my-c-mode-config)
 
@@ -144,6 +157,8 @@ RHEL7: GNU Emacs 24.3.1
 ;; theme GUI font ...
 ;; --------------------------------------------
 
+(set-face-underline 'highlight nil)
+
 {% if emacs_version | version_compare('24.1.1', '>=') %}
 (electric-pair-mode 1)
 (load-theme 'wombat t)
@@ -152,7 +167,8 @@ RHEL7: GNU Emacs 24.3.1
 ;; GUI 配置放在后面，避免 color theme 主题里面自带的配置覆盖
 (defun customize-gui-setting ()
   ;; http://stackoverflow.com/questions/5795451/how-to-detect-that-emacs-is-in-terminal-mode
-  (when (display-graphic-p)
+  ;; (when (display-graphic-p)
+  (when window-system
     "setting for emacs GUI mode"
     (scroll-bar-mode 0)
     (tool-bar-mode 0)
