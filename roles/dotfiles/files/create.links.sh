@@ -75,16 +75,15 @@ do
     # 过滤 README / build.ln.sh / ... 文件
     case $base_dotfile in
         ## XXX for 循环没有遍历 .* 隐藏文件
-        README*|ssh|.gitignore|ignore|*.bak|*.sh|*~)
+        README*|.gitignore|ignore|*.bak|*.sh|*~|'#'*'#')
             echo -e "\e[1;33m [S] 跳过 $dotfile 文件 \e[0m"
             continue
             ;;
-        Xdefaults)
-            #if [ ! -f ~/.Xdefaults-${HOSTNAME} ] && [ -f Xdefaults ]
-            if [ ! -f ~/.Xdefaults-${HOSTNAME} ]
+        ssh_config)
+            if [ ! -f ~/.ssh/config ]
             then
-                echo -e "\e[1;36m |xterm| 为 gnome-shell 创建 .Xdefaults-\${HOSTNAME} 文件 \e[0m"
-                ln -s  $dotfile ~/.Xdefaults-${HOSTNAME}
+                echo -e "\e[1;36m link for ~/.ssh/config \e[0m"
+                ln -s  $dotfile ~/.ssh/config
             fi
             ;;
     esac
