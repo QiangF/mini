@@ -90,6 +90,7 @@ alias lt=$'ls -lht --time-style="+\e[33m|\e[0m %F %T \e[33m|\e[0m"'
 # [ git ]
 #--------------------------------------------
 alias gst='git status'
+alias gdf='git diff'
 alias gca='git commit -a -m'
 alias gce='git config -e'
 alias gcl='git config -l'
@@ -113,10 +114,10 @@ alias less='less -iR'
 
 alias tx='tmux -2u'
 
-alias ee='emacsclient -t -a ""'
-alias ec='emacsclient -nc -a ""'
+## NOTE: ee function or alias can NOT auto complete **filename** with TAB, but can with 'M-/'
+# function ee { emacsclient -a "" -t "$@"; }
+# alias ee='emacsclient -t -a ""'
 
-## NOTE: functions can NOT auto complete **filename** with TAB, but can with 'M-/'
 function emt {
     ## terminal
     emacsclient -a "" -t "$@"
@@ -127,7 +128,7 @@ function emc {
     emacsclient -a "" -nc "$@"
 }
 
-function es {
+function ems {
     ## http://mjwall.com/blog/2013/10/04/how-i-use-emacs/
     ## stop emacs daemon
     server_ok=`emacsclient -a "false" -e "(boundp 'server-process)"`
