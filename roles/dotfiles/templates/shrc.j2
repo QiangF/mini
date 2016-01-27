@@ -113,15 +113,16 @@ alias less='less -iR'
 
 alias tx='tmux -2u'
 
-alias emt='emacsclient -nc -a ""'
-alias emc='emacsclient -t -a ""'
+alias ee='emacsclient -t -a ""'
+alias ec='emacsclient -nc -a ""'
 
-function ee {
+## NOTE: functions can NOT auto complete **filename** with TAB, but can with 'M-/'
+function emt {
     ## terminal
     emacsclient -a "" -t "$@"
 }
 
-function ec {
+function emc {
     ## GUI
     emacsclient -a "" -nc "$@"
 }
