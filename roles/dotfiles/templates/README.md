@@ -3,11 +3,16 @@
 
 ## ~/.bash_profile ~/.profile ~/.bashrc
 
-`/etc/profile -> /etc/profile.d/* -> ~/.bash_profile -> ~/.profile`
+`/etc/profile -> /etc/profile.d/* -> ~/.bash_profile`
+`/etc/profile -> /etc/profile.d/* -> ~/.profile`
+
+http://unix.stackexchange.com/questions/70519/linux-redhat-sudo-su-l-user-acct-does-not-source-profile
+
+**login shell** 读取配置时，匹配到 `~/.bash_profile` 将 **不再读取** `~/.profile` ：
 
 `man bash`
 
-> When  bash  is  invoked  as  an `interactive login` shell, or as a `non-interactive` shell with the `--login option`, it first reads and executes commands from the file `/etc/profile`,  if  that  file  exists.   After  reading that file, it looks for `~/.bash_profile`, `~/.bash_login`, and `~/.profile`, in that **order**, and reads and executes commands from the first one that exists and  is  readable. The `--noprofile` option may be used when the shell is started to inhibit this behavior.
+> When  bash  is  invoked  as  an **interactive login** shell, or as a **non-interactive** shell with the `--login` option, it first reads and executes commands from the file `/etc/profile`,  if  that  file  exists.   After  reading that file, it looks for `~/.bash_profile`, `~/.bash_login`, and `~/.profile`, in that **order**, and **reads and executes commands from the first one that exists and is readable**.
 
 ```
 ~/.bash_profile
@@ -18,7 +23,7 @@
 
 https://wiki.archlinux.org/index.php/Bash
 
-Environment variables are conventionally placed in `~/.profile` or `/etc/profile` so that all bourne-compatible shells can use them. 
+Environment variables are conventionally placed in `~/.profile` or `/etc/profile` so that all bourne-compatible shells can use them.
 
 | File               | Login shells | Interactive, non-login shells |
 |--------------------|--------------|-------------------------------|

@@ -1,7 +1,10 @@
 
-# init
 
-step
+# TODO
+
+1. GUI: gui variable define
+
+# init
 
 ```
 $ mkdir -pv mini/{group_vars,roles} && cd mini
@@ -40,6 +43,21 @@ localhost | FAILED >> {
   "msg": "/bin/sh: /usr/bin/python: No such file or directory\n",
   "parsed": false
 }
+```
+
+## sudo user
+
+`sudo ansible-playbook -i hostfile  user.dotfiles.yml` :
+
+```
+---
+- hosts: local
+  sudo: True
+  sudo_user: username
+  gather_facts: yes
+  any_errors_fatal: true
+  roles:
+    - dotfiles
 ```
 
 ## archboostrap under RHEL 6.x KVM
@@ -98,6 +116,12 @@ $ ansible-playbook -i hostfile -e 'ansible_python_interpreter=/usr/bin/python2' 
 # dotfiles
 
 ## shell
+
+1. login shell
+2. non-login shell
+3. interactive shell
+4. non-interactive shell
+5. sudo su - user NOT source ~/.profile
 
 ssh remote login only souce one of `~/.bash_profile` `~/.profile`
 如果 `~/.bash_profile` `~/.profile` 都存在，只加载 `~/.bash_profile`。

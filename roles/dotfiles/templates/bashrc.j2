@@ -1,9 +1,25 @@
+## -*- mode: sh -*-
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+{% if ansible_os_family == "Gentoo" %}
+{% set bash_completion_path = '/etc/bash/bashrc.d/bash_completion.sh' %}
+{% elif ansible_os_family == "RedHat" %}
+{% set bash_completion_path = '/etc/profile.d/bash_completion.sh' %}
+{% else %}
+{% set bash_completion_path = '/etc/profile.d/bash_completion.sh' %}
+{% endif -%}
+
+## NOTE: **LOGIN SHELL** if ~/.bash_profile and ~/.profile BOTH exist
+## 'sudo su - user' ONLY source ~/.bash_profile NOT source ~/.profile
+
+## XXX [Y] auto source
+[ -f {{ bash_completion_path }} ] && source {{ bash_completion_path }}
+
 ## XXX [?] source them in ~/.bash_profile
-#[[ -f /etc/bashrc ]] && . /etc/bashrc
-#[[ -f /etc/bash_completion ]] && source /etc/bash_completion
+#[ -f /etc/bashrc ] && . /etc/bashrc
+[ -f ~/.shrc ] && source ~/.shrc
 
 # [ PS1 Prompt ]
 #--------------------------------------------

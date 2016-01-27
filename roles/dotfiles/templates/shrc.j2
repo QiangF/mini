@@ -1,10 +1,11 @@
+## -*- mode: sh -*-
 
 # [ man keychain ]
 #--------------------------------------------
 ## XXX 机器重启 ~/.keychain/${HOSTNAME}-sh 文件还在
-[[ -z "$HOSTNAME" ]] && HOSTNAME=`uname -n`
-[[ -f ${HOME}/.keychain/${HOSTNAME}-sh ]] && . $HOME/.keychain/${HOSTNAME}-sh
-[[ -f ${HOME}/.keychain/${HOSTNAME}-sh-gpg ]] && . $HOME/.keychain/${HOSTNAME}-sh-gpg
+[ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
+[ -f "${HOME}/.keychain/${HOSTNAME}-sh" ] && source "${HOME}/.keychain/${HOSTNAME}-sh"
+[ -f "${HOME}/.keychain/${HOSTNAME}-sh-gpg" ] && source "${HOME}/.keychain/${HOSTNAME}-sh-gpg"
 
 # type -a time
 # whereis time | tr ' ' '\n' | grep bin
@@ -12,13 +13,39 @@
 
 # [ function ]
 #--------------------------------------------
+## https://wiki.gentoo.org/wiki/Bash
+## command -pv cmd ==> type -a cmd
+## command cmd -> /usr/bin/ssh or `\cmd` or `"cmd"`
 
 function kk { keychain --nogui ~/.ssh/id_rsa; }
-function ks { source ~/.keychain/${HOSTNAME}-sh; }
+function ks { source ~/.keychain/"${HOSTNAME}-sh"; }
+function mkcd { command mkdir -p "$@" && cd "$@"; }
+
+function rssh {
+command ssh -l root –o UseRoaming=no -o ConnectTimeout=2 \
+-o ServerAliveInterval=120 \
+-o StrictHostKeyChecking=no \
+-o UserKnownHostsFile=/dev/null "$@"
+}
+
+function nssh {
+#/usr/bin/ssh -C4 \
+command ssh –o UseRoaming=no -o ConnectTimeout=2 \
+-o ServerAliveInterval=120 \
+-o StrictHostKeyChecking=no \
+-o UserKnownHostsFile=/dev/null "$@"
+}
+
+function ixio {
+    ## cat - | curl -sF 'f:1=<-' ix.io
+    ## <cmd> |& curl -F 'f:1=<-' ix.io
+    ## lspci -nn |& curl -F 'f:1=<-' ix.io
+    curl -sF 'f:1=<-' http://ix.io/
+}
 
 function gitweek {
     local day=$1
-    if [ -z $day ]
+    if [ -z "$day" ]
     then
         day=7
     fi
@@ -43,24 +70,21 @@ alias mv='mv -iv'
 alias rm='rm -iv --preserve-root'   ## 防止杯具: rm / 下面这几个命令 chgrp chown chmod 也有该参数
 alias ln='ln -iv'
 
-# [ ls ]# 
+# [ ls ]#
 #--------------------------------------------
-# XXX [?] 下面的别名都会将 ls 使用上面的代替，无须在重复相应参数
 
-#alias lx='ls -xX'                                   # x 按行排列，X 按文件扩展名字母顺序排序
-alias ls='ls -Fx --color=auto'                      # 颜色，文件类型标志符，横向排列
+# XXX 后面的 alias 都会继承该 ls 别名，无须在重复配置 ls 相关参数
+alias ls='ls -Fx --color=auto'
 alias la='ls -A'
+## %F == %Y-%m-%d  %T == %H:%M:%S  %R == %H:%M
+alias ll=$'ls -lhX --time-style="+\e[33m|\e[0m %F %R \e[33m|\e[0m"'
+alias lt=$'ls -lht --time-style="+\e[33m|\e[0m %F %T \e[33m|\e[0m"'
 
-#alias ll='ls -lh --time-style=+%Y-%m-%d'
+## -rw-r--r-- 1 user group 1.6K 2016-01-26 12:29 profile
 #alias ll='ls -lh --time-style=long-iso'
 
-# XXX 注意，开头的 $ 符号转义: 时间戳 颜色 格式化字符 From : roylez
-# 红蓝 时间戳 高亮
-#alias ll=$'ls -lh --color=auto -X --time-style="+\e[33m| \e[34m%Y-%m-%d \e[33m|\e[m"'
-# 黄色分隔线 分隔时间戳
-alias ll=$'ls -lh --color=auto -X --time-style="+\e[33m|\e[0m %Y-%m-%d \e[33m|\e[0m"'
-# %F %T ==> %Y-%m-%d %H:%M 显示文件修改的准确时间，并按照修改时间排序
-alias lt=$'ls -lht --color=auto -X --time-style="+\e[33m|\e[0m %F %T \e[33m|\e[0m"'
+## -rw-r--r-- 1 user group 1.6K 2016-01-26 12:29:16.279111000 +0800 profile
+#alias ll='ls -h --full-time'
 
 
 # [ git ]
@@ -82,6 +106,57 @@ alias exit="clear; exit"
 alias free="free -t"
 alias grep='grep --color=auto -d skip -iI'
 alias less='less -iR'
+
+
+# [ soft ]
+#--------------------------------------------
+
+alias tx='tmux -2u'
+
+alias emt='emacsclient -nc -a ""'
+alias emc='emacsclient -t -a ""'
+
+function ee {
+    ## terminal
+    emacsclient -a "" -t "$@"
+}
+
+function ec {
+    ## GUI
+    emacsclient -a "" -nc "$@"
+}
+
+function es {
+    ## http://mjwall.com/blog/2013/10/04/how-i-use-emacs/
+    ## stop emacs daemon
+    server_ok=`emacsclient -a "false" -e "(boundp 'server-process)"`
+    if [ "t" = "$server_ok" ]; then
+        echo "Shutting down Emacs server"
+        emacsclient -e '(kill-emacs)'
+    else
+        echo "Emacs server not running"
+    fi
+}
+
+{% if gui is defined %}
+
+# [ Xorg X11 ]
+#--------------------------------------------
+
+alias startx='startx &> /dev/shm/startx.log'
+
+[ -f /usr/bin/gvim ] && alias vim='gvim -v'
+
+# 查看 窗口 class 属性 / 名称 # From : Archwiki Openbox
+alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"NAME\", \"CLASS\""'
+
+function elimage {
+    ## XXX 无效
+    ##curl -F "screenshot=@$1" -F 'paste=1' http://paste.ubuntu.org.cn
+    [ -f "$1" ] && curl --compressed -F "name=@$1" http://img.vim-cn.com/ || echo "$1 NOT image file"
+}
+
+{% endif -%}
 
 {% if ansible_distribution == 'Archlinux' %}
 # [ archlinux pacman ]
@@ -146,83 +221,6 @@ function owns {
 alias vx="vimx"
 
 {% endif -%}
-
-function mkcd { command mkdir -p "$@" && cd "$@" ;}
-
-## https://wiki.gentoo.org/wiki/Bash
-## command -pv cmd ==> type -a cmd
-## command cmd -> /usr/bin/ssh or `\cmd` or `"cmd"`
-function rssh {
-command ssh -l root –o UseRoaming=no -o ConnectTimeout=2 \
--o ServerAliveInterval=120 \
--o StrictHostKeyChecking=no \
--o UserKnownHostsFile=/dev/null "$@"
-}
-
-function nssh {
-#/usr/bin/ssh -C4 \
-command ssh –o UseRoaming=no -o ConnectTimeout=2 \
--o ServerAliveInterval=120 \
--o StrictHostKeyChecking=no \
--o UserKnownHostsFile=/dev/null "$@"
-}
-
-function ixio {
-    ## cat - | curl -sF 'f:1=<-' ix.io
-    ## <cmd> |& curl -F 'f:1=<-' ix.io
-    ## lspci -nn |& curl -F 'f:1=<-' ix.io
-    curl -sF 'f:1=<-' http://ix.io/
-}
-# [ soft ]
-#--------------------------------------------
-
-alias tx='tmux -2u'
-
-alias emt='emacsclient -nc -a ""'
-alias emc='emacsclient -t -a ""'
-
-function ee {
-    ## terminal
-    emacsclient -a "" -t "$@"
-}
-
-function ec {
-    ## GUI
-    emacsclient -a "" -nc "$@"
-}
-
-function es {
-    ## http://mjwall.com/blog/2013/10/04/how-i-use-emacs/
-    ## stop emacs daemon
-    server_ok=`emacsclient -a "false" -e "(boundp 'server-process)"`
-    if [ "t" == "$(server_ok)" ]; then
-        echo "Shutting down Emacs server"
-        emacsclient -e '(kill-emacs)'
-    else
-        echo "Emacs server not running"
-    fi
-}
-
-{% if gui is defined %}
-
-# [ Xorg X11 ]
-#--------------------------------------------
-
-alias startx='startx &> /dev/shm/startx.log'
-
-[ -f /usr/bin/gvim ] && alias vim='gvim -v'
-
-# 查看 窗口 class 属性 / 名称 # From : Archwiki Openbox
-alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"NAME\", \"CLASS\""'
-
-function elimage {
-    ## XXX 无效
-    ##curl -F "screenshot=@$1" -F 'paste=1' http://paste.ubuntu.org.cn
-    [ -f "$1" ] && curl --compressed -F "name=@$1" http://img.vim-cn.com/ || echo "$1 NOT image file"
-}
-
-{% endif -%}
-
 
 
 # vim:set et ft=sh fdm=marker sw=4 sts=4 ts=4 nopaste :

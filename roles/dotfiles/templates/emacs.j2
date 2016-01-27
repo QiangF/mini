@@ -5,12 +5,11 @@ RHEL6: GNU Emacs 23.1.1
 RHEL7: GNU Emacs 24.3.1
 #}
 
-{%- set ev = emacs_version.stdout.strip()[0] %}
-
 ;; TODO
 ;; default Nonincremental Search
 ;; C-x C-f no default path
 ;; swap windows layout
+;; no last empty line break
 
 ;; emacs -q --load path-to-custom-init.el
 
@@ -52,6 +51,9 @@ RHEL7: GNU Emacs 24.3.1
 (set-language-environment 'English)
 
 ;; FUCK all NO UTF-8 coding...
+;; 1. terminal 编码设置为 UTF-8
+;; 2. linux 环境变量 ENV ：export LANG=en_US.UTF-8
+;; 3. emacs 配置编码解析顺序
 (setq locale-coding-system 'utf-8)
 (set-coding-system-priority 'utf-8 'gbk 'gb2312)
 (set-default-coding-systems 'utf-8)
@@ -160,7 +162,8 @@ RHEL7: GNU Emacs 24.3.1
 
 (set-face-underline 'highlight nil)
 
-{% if emacs_version | version_compare('24.1.1', '>=') %}
+{% set ev = emacs_version.stdout.strip()[0] %}
+{% if ev | version_compare('24.1.1', '>=') %}
 (electric-pair-mode 1)
 (load-theme 'wombat t)
 {% endif %}
