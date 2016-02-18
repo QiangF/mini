@@ -22,7 +22,7 @@ function ks { source ~/.keychain/"${HOSTNAME}-sh"; }
 function mkcd { command mkdir -p "$@" && cd "$@"; }
 
 function rssh {
-command ssh -l root –o UseRoaming=no -o ConnectTimeout=2 \
+command ssh -l root -o ConnectTimeout=2 \
 -o ServerAliveInterval=120 \
 -o StrictHostKeyChecking=no \
 -o UserKnownHostsFile=/dev/null "$@"
@@ -30,7 +30,7 @@ command ssh -l root –o UseRoaming=no -o ConnectTimeout=2 \
 
 function nssh {
 #/usr/bin/ssh -C4 \
-command ssh –o UseRoaming=no -o ConnectTimeout=2 \
+command ssh -o ConnectTimeout=2 \
 -o ServerAliveInterval=120 \
 -o StrictHostKeyChecking=no \
 -o UserKnownHostsFile=/dev/null "$@"
@@ -118,17 +118,17 @@ alias tx='tmux -2u'
 # function ee { emacsclient -a "" -t "$@"; }
 # alias ee='emacsclient -t -a ""'
 
-function emt {
-    ## terminal
+function en {
+    ## terminal : emaca -nw
     emacsclient -a "" -t "$@"
 }
 
-function emc {
+function ec {
     ## GUI
     emacsclient -a "" -nc "$@"
 }
 
-function ems {
+function es {
     ## http://mjwall.com/blog/2013/10/04/how-i-use-emacs/
     ## stop emacs daemon
     server_ok=`emacsclient -a "false" -e "(boundp 'server-process)"`
