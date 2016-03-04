@@ -48,9 +48,36 @@ http://mywiki.wooledge.org/DotFiles
 
 bash-only variables like `HISTSIZE` (this is not an environment variable, don't `export` it!)
 
+## PROMPT $PS1
 
+    # echo $PS1
+    \[\ek\e\\\]\[\ek\W\e\\\] \[\e[1;31m\]${HOSTNAME} \[\e[01;34m\]\w \n \$\[\e[00m\]
 
+`man bash` 章节 `PROMPTING`
 
+    \e     an ASCII escape character (033)
+    \h     the hostname up to the first '.'
+    \H     the hostname
+    \u     the username of the current user
+    \w     the current working directory
+    \W     the basename of the current working directory
+
+`man console_codes`
+
+    ESC (0x1B, ^[) starts an escape sequence
+
+    | color | foreground | background |
+    |-------+------------+------------|
+    | bold  |          1 |          - |
+    | red   |         31 |         41 |
+    | green |         32 |         42 |
+    | blue  |         34 |         44 |
+
+`man ascii`
+
+    Oct   Dec   Hex   Char                        Oct   Dec   Hex   Char
+    ------------------------------------------------------------------------
+    033   27    1B    ESC (escape)                133   91    5B    [ ]
 
 
 

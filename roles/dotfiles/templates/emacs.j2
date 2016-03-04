@@ -165,8 +165,12 @@ RHEL7: GNU Emacs 24.3.1
 {% set ev = emacs_version.stdout.strip() %}
 ;; emacs version: {{ ev }}
 {% if ev | version_compare('24.1.1', '>=') %}
+;; NOTE: copy/paste 代码如果有括号，会导致多余的补全
 (electric-pair-mode 1)
+;; terminal
 (load-theme 'wombat t)
+;; TODO: GUI
+;; (load-theme 'solarized-light t)
 {% endif %}
 
 ;; GUI 配置放在后面，避免 color theme 主题里面自带的配置覆盖
@@ -177,7 +181,6 @@ RHEL7: GNU Emacs 24.3.1
     "setting for emacs GUI mode"
     (scroll-bar-mode 0)
     (tool-bar-mode 0)
-    (load-theme 'solarized-light t)
     ;; 取消 mode-line 状态栏 status bar 3D 样式。放在 theme 前会被主题样式覆盖
     ;; http://www.svenhartenstein.de/Software/Emacs
     ;; http://ldc.usb.ve/docs/emacs/Optional-Mode-Line.html

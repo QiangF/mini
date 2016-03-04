@@ -3,22 +3,22 @@
   file: path=~/dotfiles state=directory
 
 - name: ~/.profile
-  template: src=profile.j2 dest={{ test_path }}/profile backup=yes
+  template: src=profile.j2 dest={{ test_path }}/profile
   tags:
     - bash
 
 - name: ~/.shrc
-  template: src=shrc.j2  dest={{ test_path }}/shrc backup=yes
+  template: src=shrc.j2  dest={{ test_path }}/shrc
   tags:
     - bash
 
 - name: ~/.bashrc
-  template: src=bashrc.j2  dest={{ test_path }}/bashrc backup=yes
+  template: src=bashrc.j2  dest={{ test_path }}/bashrc
   tags:
     - bash
 
 - name: ~/.vimrc
-  template: src=vimrc.j2 dest={{ test_path }}/vimrc backup=yes
+  template: src=vimrc.j2 dest={{ test_path }}/vimrc
   tags:
     - vim
 
@@ -39,7 +39,7 @@
     - emacs
 
 - name: ~/.emacs
-  template: src=emacs.j2 dest={{ test_path }}/emacs backup=yes
+  template: src=emacs.j2 dest={{ test_path }}/emacs
   tags:
     - emacs
 
@@ -73,7 +73,7 @@
   #  - v
 
 - name: ~/.tmux.conf
-  template: src=tmux.conf.j2 dest={{ test_path }}/tmux.conf backup=yes
+  template: src=tmux.conf.j2 dest={{ test_path }}/tmux.conf
   tags:
     - tmux
 
@@ -86,6 +86,10 @@
   copy: src=create.links.sh dest={{ test_path }}/create.links.sh
   tags:
     - script
+
+## ansible default generate config mode : 660 -rw-rw-r--
+- name: chmod -R 640 ~/dotfiles/*
+  shell: chmod -R 640 ~/dotfiles/*
 
 ### XXX test NO BackUp task executed only specify option : -e "test=true"
 #- name:  test config

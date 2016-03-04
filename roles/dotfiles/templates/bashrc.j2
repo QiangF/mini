@@ -24,6 +24,31 @@
 # [ PS1 Prompt ]
 #--------------------------------------------
 
+## man bash PROMPTING
+
+## \e     an ASCII escape character (033)
+## \h     the hostname up to the first '.'
+## \H     the hostname
+## \w     the current working directory
+## \W     the basename of the current working directory
+## \u     the username of the current user
+
+## man console_codes
+
+## ESC (0x1B, ^[) starts an escape sequence
+
+## | color | foreground | background |
+## |-------+------------+------------|
+## | bold  |          1 |          - |
+## | red   |         31 |         41 |
+## | green |         32 |         42 |
+## | blue  |         34 |         44 |
+
+## man ascii
+## Oct   Dec   Hex   Char                        Oct   Dec   Hex   Char
+## ------------------------------------------------------------------------
+## 033   27    1B    ESC (escape)                133   91    5B    [ ]
+
 function _git_prompt {
 
     ## XXX 旧版 ( centos 5 ) git 不支持 -u normal 参数
@@ -54,7 +79,12 @@ function _git_prompt {
 #prompt_str="`_git_prompt`"'\w \n \$ '
 
 # XXX 使用 \[ ... \] 包裹 screen 标题栏的 目录 | vim 等程序才能正常显示
-prompt_str=" \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ "
+if [[ ${EUID} == 0 ]] ; then
+    ## 使用 '单引号' 引用，防止 '\$' 被 "双引号" 转义
+    prompt_str=' \[\e[1;31m\]${HOSTNAME} \[\e[01;34m\]\w \n \$\[\e[00m\] '
+else
+    prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ '
+fi
 
 case "$TERM" in
     screen*)

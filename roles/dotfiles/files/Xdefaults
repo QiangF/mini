@@ -1,0 +1,52 @@
+! vim:set et ft=xdefaults fdm=marker sw=4 sts=4 ts=4 nopaste :
+
+!! xrdb -q 命令查看当前已加载的 Xdefaults / Xresource 配置信息
+
+xterm*loginShell                        : true
+xterm*termName                          : xterm-256color
+xterm*saveLines                         : 30720
+
+xterm*locale                            : true
+xterm*utf8                              : 1
+xterm*utf8Title                         : true
+xterm*cjkWidth                          : true
+
+xterm*faceName                          : Envy Code R:pixelsize=12.5
+xterm*faceNameDoublesize                : WenQuanYi Micro Hei Mono:pixelsize=12.5
+
+xterm*borderless                        : 1
+xterm*geometry                          : 115x34
+xterm*scrollBar                         : False
+xterm*visualBell                        : false
+
+!! Meta ( Alt ) 发送 Escape ( irssi tab 切换 / Alt + . 补全 )
+!! https://wiki.archlinux.org/index.php/Xterm
+xterm*altSendsEscape                    : true
+xterm*metaSendsEscape                   : true
+xterm*eightBitInput                     : false
+xterm*deleteIsDEL                       : false
+
+xterm*dynamicColors                     : true
+
+xterm*cursorColor                       : LightSteelBlue1
+xterm*background                        : #1a1a1a
+xterm*foreground                        : white
+xterm*color1                            : #db1b1b
+xterm*color9                            : #fe3f44
+xterm*color2                            : #90d112
+xterm*color10                           : #bbf73e
+xterm*color3                            : #ff8b00
+xterm*color11                           : #ffe200
+xterm*color4                            : #505ff1
+xterm*color12                           : #7992ff
+xterm*color5                            : #db003a
+xterm*color13                           : #ff427e
+xterm*color6                            : #00a8db
+xterm*color14                           : #42bdff
+xterm*color7                            : #e1e1e1
+xterm*color15                           : #fcfcfc
+xterm*color0                            : #171717
+xterm*color8                            : #505354
+
+
+
