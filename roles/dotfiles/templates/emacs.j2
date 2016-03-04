@@ -116,7 +116,15 @@ RHEL7: GNU Emacs 24.3.1
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key "\r" 'newline-and-indent)
+(global-set-key (kbd "C-x C-b") 'bs-show) ;; bs instead of buffer-menu
+(global-set-key (kbd "M-/") 'hippie-expand)
 
+(setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill))
 
 ;; hook
 ;; --------------------------------------------
