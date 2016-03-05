@@ -4,6 +4,8 @@
 
 1. GUI: gui variable define
 2. `sudo su - user` 无法 `source ~/.profile`
+3. backup 用来区分和对比直接对 dotfiles 文件的修改，因为 dotfiles 是由 ansible 生成的不受 git 控制
+4. root tmux PS1
 
 # init
 

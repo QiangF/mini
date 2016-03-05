@@ -88,8 +88,9 @@
     - script
 
 ## ansible default generate config mode : 660 -rw-rw-r--
-- name: chmod -R 640 ~/dotfiles/*
-  shell: chmod -R 640 ~/dotfiles/*
+- name: find ~/dotfiles -type f | xargs chmod 640
+  shell: find ~/dotfiles -type f | xargs chmod 640
+
 
 ### XXX test NO BackUp task executed only specify option : -e "test=true"
 #- name:  test config

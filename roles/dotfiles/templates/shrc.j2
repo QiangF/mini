@@ -119,6 +119,8 @@ alias tx='tmux -2u'
 # alias ee='emacsclient -t -a ""'
 
 function en {
+    ## change tmux or screen windows title as 'emacs'
+    case "$TERM" in screen*) printf '\033kemacs\033\\';; esac
     ## terminal : emaca -nw
     emacsclient -a "" -t "$@"
 }

@@ -35,8 +35,6 @@
 
 ## man console_codes
 
-## ESC (0x1B, ^[) starts an escape sequence
-
 ## | color | foreground | background |
 ## |-------+------------+------------|
 ## | bold  |          1 |          - |
@@ -44,7 +42,10 @@
 ## | green |         32 |         42 |
 ## | blue  |         34 |         44 |
 
+## ESC (0x1B, ^[) starts an escape sequence
+
 ## man ascii
+
 ## Oct   Dec   Hex   Char                        Oct   Dec   Hex   Char
 ## ------------------------------------------------------------------------
 ## 033   27    1B    ESC (escape)                133   91    5B    [ ]
@@ -82,30 +83,30 @@ function _git_prompt {
 if [[ ${EUID} == 0 ]] ; then
     ## 使用 '单引号' 引用，防止 '\$' 被 "双引号" 转义
     prompt_str=' \[\e[1;31m\]${HOSTNAME} \[\e[01;34m\]\w \n \$\[\e[00m\] '
+    path_title='\[\ek\u@\h:\w\e\\\]'
 else
     prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ '
+    path_title='\[\ek\W\e\\\]'
 fi
+
+# if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
+#     PS1_HOSTNAME=
+# else
+#     PS1_HOSTNAME="@$HOSTNAME"
+# fi
 
 case "$TERM" in
     screen*)
 
-        # if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
-        #     PS1_HOSTNAME=
-        # else
-        #     PS1_HOSTNAME="@$HOSTNAME"
-        # fi
-
         function ssh {
-            # XXX 未知 \134
-            #echo -n -e "\033k@`echo $1|sed 's:.*@::'`\033\134″"
-            echo -n -e "\ek@`echo $1|sed 's:.*@::'`\e\\"
+            local ssh_args=`echo $1|sed 's:.*@::'`
+            echo -n -e "\ek@${ssh_args}\e\\"
             ## function rssh
             nssh "$@"
         }
 
-        PATHTITLE='\[\ek\W\e\\\]'   # 路径标题
-        PROGRAMTITLE='\[\ek\e\\\]'  # 程序标题
-        prompt_str="${PROGRAMTITLE}${PATHTITLE}${prompt_str}"
+        program_title='\[\ek\e\\\]'  # [?] 程序标题
+        prompt_str="${program_title}${path_title}${prompt_str}"
 
         ;;
     *)
