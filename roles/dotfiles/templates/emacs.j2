@@ -13,8 +13,6 @@ RHEL7: GNU Emacs 24.3.1
 
 ;; emacs -q --load path-to-custom-init.el
 
-
-
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq ediff-split-window-function 'split-window-horizontally) ;; '|' key swap horizontal <-> vertical
@@ -116,18 +114,31 @@ RHEL7: GNU Emacs 24.3.1
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key "\r" 'newline-and-indent)
+;; https://github.com/mjwall/dotfiles/blob/master/dotemacs.d/init.el
 (global-set-key (kbd "C-x C-b") 'bs-show) ;; bs instead of buffer-menu
-(global-set-key (kbd "M-/") 'hippie-expand)
-
+;; https://github.com/brianwisti/dotfiles/blob/master/emacs.d/init.el
+(global-set-key (kbd "C-;") 'comment-or-uncomment-region)
+;; https://sites.google.com/site/steveyegge2/effective-emacs
+;; Invoke M-x without Alt
+;; (global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-c\C-m" 'execute-extended-command)
+;; https://github.com/xiaohanyu/oh-my-emacs/blob/master/core/ome-keybindings.org
 (setq hippie-expand-try-functions-list
       '(try-complete-file-name-partially
         try-complete-file-name
         try-expand-dabbrev
         try-expand-dabbrev-all-buffers
         try-expand-dabbrev-from-kill))
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-c o") 'occur)
 
 ;; hook
 ;; --------------------------------------------
+
+;; ;; Markdown
+;; (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+;; (add-to-list 'auto-mode-alist '("\\.mkd$" . markdown-mode))
+;; (add-hook 'markdown-mode-hook (lambda () (visual-line-mode t)))
 
 ;(add-hook 'text-mode-hook (lambda () (setq indent-tabs-mode nil)))
 

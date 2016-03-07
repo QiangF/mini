@@ -1,0 +1,35 @@
+set titlestring=Firefox
+set focuscontent
+set gui=none,tabs
+set noautocomplete
+set suggestengines=''
+set status=input,ssl,location,tabcount,position
+
+"" default leader '\'
+let mapleader = ","
+nnoremap <leader>a :tab addons<CR>
+nnoremap <leader>d :dialog downloads<CR>
+nnoremap <leader>h :sbar history<CR>
+nnoremap <leader>i :dialog pageinfo<CR>
+nnoremap <leader>i :dialog pageinfo<CR>
+nnoremap <leader>m :set gui=invmenu<CR>
+nnoremap <leader>n :set gui=invnavigation<CR>
+nnoremap <leader>r :restart<CR>
+nnoremap <leader>s :source ~/.vimperatorrc<CR>
+nnoremap <C-Q> <C-W>
+
+set nextpattern=\s*下一页|下一张|下一篇|下一頁|下页|后页\s*,\bnext\b,^>$,^(>>|››|»)$,^(>|»),(>|»)$,\bmore\b
+set previouspattern=\s*上一页|上一张|上一篇|上一頁|上页|前页\s*,\bprev|previous\b,^<$,^(<<|‹‹|«)$,^(<|«)$,(<|«)$
+
+hi Normal color: #555555; background: #EFF0F1;
+hi StatusLine font-weight:bold; font-family:monospace; text-align: left !important;
+"hi StatusLine color: white; background: #555555; font-weight: bold; font-family: monospace;
+hi CmdLine color: black; background: #CCCCCC;
+
+""js document.getElementById("liberator-status").setAttribute("liberatorPosition", 1)
+"" :echo document.getElementById("liberator-status")
+"" <xul:toolbaritem id="liberator-status" liberator:highlight="StatusLine" ... liberatorposition="1">
+
+"source! /home/i/.vimperatorrc.local
+
+" vim: set ft=vim:
