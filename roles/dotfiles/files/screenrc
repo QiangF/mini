@@ -1,0 +1,62 @@
+# vim:set et ft=screen fdm=marker sw=4 sts=4 ts=4 nopaste :
+
+## prefix key : C-l
+escape ^ll
+startup_message off
+# 退出相关程序(vim,htop...)，自动刷新屏幕 LESS env
+altscreen on
+autodetach on
+vbell off
+defscrollback 30270
+defencoding utf-8
+encoding utf-8 utf-8
+
+# 将所运行程序的名称作为 screen 的 title 的功能, 默认bash
+# http://superuser.com/questions/339844/why-is-screen-not-showing-the-current-running-process-name-mac-osx-terminal-ba
+# screen needs a 'magic string' to know how your prompt *ends* so it can pick up the command that's running
+shelltitle '$ |bash'    ## '$' ==> PS1 结束字符
+# XXX shelltitle '# |bash' ## root user
+##shelltitle '· |zsh'    ## zsh 扩展内置的 precmd_functions 函数来动态修改 title
+#
+# 底部标题栏 caption / hardstatus(最底部)
+# 转义字符：man 手册里面的 STRING ESCAPES
+
+# [ Color VARIABLES - Strings ]
+#--------------------------------------------
+# From : https://github.com/px/screenrc/blob/master/.screenrc
+# COLOR: colors codes are combinations of
+# [attribute modifier] [color description]
+# the manual talks of "attribute/color modifiers".
+# man 手册 "STRING ESCAPES".
+# k      black
+# r      red
+# g      green
+# y      yellow
+# b      blue
+# m      magenta    洋红
+# c      cyan       亮蓝
+# w      white
+# d      default color
+# .      leave color unchanged
+# %h     king@king:~
+# %l     loadavg 负载
+
+# [ caption 状态栏 ]
+#--------------------------------------------
+# XXX [?] 状态栏, 不用 Hardstatus 实现, 因为要把 xterm 的 title 伪装成 Hardstatus
+# 大括号里面为颜色组合
+caption always "%{=b k}%{c} %l | %{k}%L=%-w%7>%{g}%n %t%{-}%+w%-014< %-013=%{b y} %m-%d %c "
+
+# [ title ]
+#--------------------------------------------
+
+# screen 中动态设置标题
+# http://www.adam8157.info/blog/2011/04/screen-dynamic-titles/
+hardstatus off
+# %H hostname 当在远程启动 screen 时才变得有效
+hardstatus string "Screen@%H: %t"
+
+## 把 xterm 的 titlebar 当作 screen 的hardstatus
+#termcapinfo xterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
+
+

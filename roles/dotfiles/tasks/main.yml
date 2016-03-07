@@ -87,10 +87,34 @@
   tags:
     - script
 
+- name: ~/dotfiles/screenrc
+  copy: src=screenrc  dest={{ test_path }}/screenrc
+
+- name: ~/dotfiles/gitconfig
+  copy: src=gitconfig  dest={{ test_path }}/gitconfig
+
+- name: ~/dotfiles/gitignore
+  copy: src=gitignore dest={{ test_path }}/gitignore
+
+- name: ~/dotfiles/Xdefaults
+  copy: src=Xdefaults dest={{ test_path }}/Xdefaults
+  when: desktop | default(false) | bool
+
+- name: ~/dotfiles/pentadactylrc
+  copy: src=pentadactylrc dest={{ test_path }}/pentadactylrc
+  when: desktop | default(false) | bool
+
+- name: ~/dotfiles/vimperatorrc
+  copy: src=vimperatorrc dest={{ test_path }}/vimperatorrc
+  when: desktop | default(false) | bool
+
+- name: ~/dotfiles/fonts.conf
+  copy: src=fonts.conf dest={{ test_path }}/fonts.conf
+  when: desktop | default(false) | bool
+
 ## ansible default generate config mode : 660 -rw-rw-r--
 - name: find ~/dotfiles -type f | xargs chmod 640
   shell: find ~/dotfiles -type f | xargs chmod 640
-
 
 ### XXX test NO BackUp task executed only specify option : -e "test=true"
 #- name:  test config

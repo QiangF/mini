@@ -1,0 +1,103 @@
+set titlestring="Firefox"
+" 默认为普通模式，非插入模式
+"set focuscontent
+" 所有的匹配都会高亮
+set hlfind
+" 使用 tab 触发 自动补全，将补全正则表达式式设为空
+set autocomplete=
+set suggestengines=
+set wildmode=list:full
+
+"" From : http://www.douban.com/group/topic/14238246/
+"" 使用 hi status 命令，TAB 补全可以查看对应状态行的属性值
+hi CmdCmdLine color: black !important; background: #DCDAD5 !important;
+"hi StatusLineNormal color: black !important; background: #8a8a8a !important;
+hi StatusLineNormal color: black !important; background:  #8a8a8a !important;
+
+" [[ 与 ]] 跳转到下一页的链接识别
+set     nextpattern+='^››$','^››','››$','\s*下一页|下一张|下一章|下一篇|下一頁|下页|后页\s*'
+set previouspattern+='^‹‹$','^‹‹','‹‹$','\s*上一页|上一张|下一章|上一篇|上一頁|上页|前页\s*'
+set passkeys+=mail.google.com:jk<CR>,gi
+
+" 命令行 模式 缩写，打出以下缩写之后，再加一个空格展开缩写！
+cabbrev ..  127.0.0.1
+cabbrev ,,  https://
+cabbrev cf  about:config
+cabbrev ss  https://
+cabbrev g   google.com.hk
+cabbrev gf  google.com.hk/finance?hl=zh-CN&sourceid=cnhp
+cabbrev gp  ditu.google.cn/maps?hl=zh-cn&tab=wl
+cabbrev gi  images.google.com
+cabbrev gt  translate.google.com/#en|zh-CN|
+cabbrev ge  https://encrypted.google.com
+cabbrev gm  https://mail.google.com
+cabbrev tt  https://twitter.com
+cabbrev it  https://github.com/lvii
+cabbrev bd  baidu.com
+cabbrev bt  torrentz.eu
+cabbrev db  douban.com
+cabbrev wx  wx.qq.com
+cabbrev tb  taobao.com
+cabbrev yd  dict.youdao.com
+
+" [ 自定义快捷键 ]
+"--------------------------------------------
+"" https://g.mozest.com/viewthread.php?tid=38908&page=32#pid285954
+"" map -modes=n -builtin -silent j 5j
+"" map -modes=n -builtin -silent k 5k
+"" From: help map
+"" map -b -m input <A-n> <Down>
+
+" c 键进入命令行模式
+map -b c :
+
+" 屏幕滚动
+map -b -m normal j 5j
+map -b -m normal k 5k
+map -b -m normal J <C-d>
+map -b -m normal K <C-u>
+
+" Menu 显示/隐藏 菜单栏 开关
+map <F2> :set guioptions!=m<CR>
+map <F3> :set guioptions!=T<CR>
+
+" 停止 加载页面
+map -b s <C-c>
+
+" 标签页 切换
+"map -b T <C-^>
+map -b <F11> gT
+map -b <F12> gt
+
+"" firefox 15 使用 pental nightly 版本，mapleader 选项被移除：
+"" :h NEWS 查看提示
+map , <leader>
+map -b <leader>p   gT
+map -b <leader>n   gt
+map -b <leader>a   :dialog      addons<CR>
+map -b <leader>D   :dialog      downloads<CR>
+map -b <leader>h   :sidebar!    history<CR>
+"map -b <leader>h   :sidebar!    历史<CR>
+map -b <leader>p   :dialog      preferences<CR>
+map -b <leader>P   :dialog      places<CR>
+map -b <leader>q   ZZ
+map -b <leader>r   :restart<CR>
+"map -b <leader>s   :source ~/.pentadactylrc<CR>
+map -b <leader>S   :rehash<CR>
+
+" 快速改变页面编码
+map -b <leader>eu :set encoding=UTF-8
+map -b <leader>eg :set encoding=GB2312
+
+" [ Firefox keyshot ]
+"""""""""""""""""""""""""""""""""""""""""""""
+" 复制 / 粘贴 / 撤销 / 全选
+" pentadactyl 中 map 命令引入一个特殊字符 – <Pass>
+" 该特殊字符可以把前面 mapping 的键直接传给 firefox
+map -m n,v,i,c,t <C-a> <Pass>
+map -m n,v,i,c,t <C-c> <Pass>
+map -m i,c,t <C-v> <Pass>
+map -m i,c,t <C-x> <Pass>
+map -m i,c,t <C-z> <Pass>
+
+" vim: set ft=vim:
