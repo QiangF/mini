@@ -18,8 +18,8 @@ nnoremap <leader>r :restart<CR>
 nnoremap <leader>s :source ~/.vimperatorrc<CR>
 nnoremap <C-Q> <C-W>
 
-set nextpattern=\s*下一页|下一张|下一篇|下一頁|下页|后页\s*,\bnext\b,^>$,^(>>|››|»)$,^(>|»),(>|»)$,\bmore\b
-set previouspattern=\s*上一页|上一张|上一篇|上一頁|上页|前页\s*,\bprev|previous\b,^<$,^(<<|‹‹|«)$,^(<|«)$,(<|«)$
+set     nextpattern+='^››$','^››','››$','\s*下一页|下一张|下一章|下一篇|下一頁|下页|后页\s*'
+set previouspattern+='^‹‹$','^‹‹','‹‹$','\s*上一页|上一张|下一章|上一篇|上一頁|上页|前页\s*'
 
 hi Normal color: #555555; background: #EFF0F1;
 hi StatusLine font-weight:bold; font-family:monospace; text-align: left !important;

@@ -20,6 +20,22 @@
 ## XXX [?] source them in ~/.bash_profile
 #[ -f /etc/bashrc ] && . /etc/bashrc
 [ -f ~/.shrc ] && source ~/.shrc
+[ -f ~/.bash.local ] && source ~/.bash.local
+
+# [ bash-only ]
+#--------------------------------------------
+
+# 去除重复历史记录。bash(1) for more options
+# ... or force ignoredups and ignorespace
+#HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# HISTSIZE 控制历史命令记录的总行数,默认 500
+export HISTSIZE=40960
+export HISTTIMEFORMAT="%F %T "
+
 
 # [ PS1 Prompt ]
 #--------------------------------------------
@@ -82,10 +98,12 @@ function _git_prompt {
 # XXX 使用 \[ ... \] 包裹 screen 标题栏的 目录 | vim 等程序才能正常显示
 if [[ ${EUID} == 0 ]] ; then
     ## 使用 '单引号' 引用，防止 '\$' 被 "双引号" 转义
-    prompt_str=' \[\e[1;31m\]${HOSTNAME} \[\e[01;34m\]\w \n \$\[\e[00m\] '
+    prompt_str=' \[\e[1;31m\]${HOSTNAME} \[\e[01;34m\]\w \n \$ '
+    ## sudo su - 切换到 root 用户 tmux title 格式 user@host path
     path_title='\[\ek\u@\h:\w\e\\\]'
 else
-    prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ '
+    ## ${PWD} absolute path
+    prompt_str=' \[\e[1;34m\]${HOSTNAME} ${PWD} \n \[\e[1;32m\]\$ '
     path_title='\[\ek\W\e\\\]'
 fi
 
@@ -120,23 +138,6 @@ function _prompt_command {
 }
 
 PROMPT_COMMAND=_prompt_command
-
-# [ bash-only history ]
-#--------------------------------------------
-
-# 去除重复历史记录。bash(1) for more options
-# ... or force ignoredups and ignorespace
-#HISTCONTROL=ignoredups:ignorespace
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# HISTSIZE 控制历史命令记录的总行数,默认 500
-export HISTSIZE=40960
-#export HISTFILESIZE=2000
-export HISTTIMEFORMAT="%F %T "
-
-
 
 
 
