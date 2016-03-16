@@ -98,12 +98,12 @@ function _git_prompt {
 # XXX 使用 \[ ... \] 包裹 screen 标题栏的 目录 | vim 等程序才能正常显示
 if [[ ${EUID} == 0 ]] ; then
     ## 使用 '单引号' 引用，防止 '\$' 被 "双引号" 转义
-    prompt_str=' \[\e[1;31m\]${HOSTNAME} \[\e[01;34m\]\w \n \$ '
+    ## root use  ${PWD} absolute path
+    prompt_str=' \[\e[1;31m\]\u@${HOSTNAME} \[\e[01;34m\]${PWD} \n \$ '
     ## sudo su - 切换到 root 用户 tmux title 格式 user@host path
     path_title='\[\ek\u@\h:\w\e\\\]'
 else
-    ## ${PWD} absolute path
-    prompt_str=' \[\e[1;34m\]${HOSTNAME} ${PWD} \n \[\e[1;32m\]\$ '
+    prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ '
     path_title='\[\ek\W\e\\\]'
 fi
 

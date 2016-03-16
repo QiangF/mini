@@ -87,14 +87,14 @@ do
         ssh_config)
             if [ ! -f ~/.ssh/config ]
             then
-                echo -e "\e[1;36m link for ~/.ssh/config \e[0m"
+                echo -e "\e[1;33 [L] --> link for ~/.ssh/config \e[0m"
                 ln -s  $dotfile ~/.ssh/config
             fi
             ;;
         Xdefaults)
             if [ ! -f ~/.Xdefaults-"${HOSTNAME}" ]
             then
-                echo -e "\e[1;36m .Xdefaults-${HOSTNAME} |xterm| gnome-shell \e[0m"
+                echo -e "\e[1;33m [L] --> .Xdefaults-${HOSTNAME} |xterm| gnome-shell \e[0m"
                 ln -s  $dotfile ~/.Xdefaults-${HOSTNAME}
             fi
             ;;
