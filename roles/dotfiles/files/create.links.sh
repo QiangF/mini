@@ -91,6 +91,13 @@ do
                 ln -s  $dotfile ~/.ssh/config
             fi
             ;;
+        Xdefaults)
+            if [ ! -f ~/.Xdefaults-"${HOSTNAME}" ]
+            then
+                echo -e "\e[1;36m .Xdefaults-${HOSTNAME} |xterm| gnome-shell \e[0m"
+                ln -s  $dotfile ~/.Xdefaults-${HOSTNAME}
+            fi
+            ;;
     esac
 
     is_file_or_dir $dotfile $base_dotfile $home_dotfile

@@ -2,23 +2,31 @@
 - name: mkdir -pv ~/dotfiles
   file: path=~/dotfiles state=directory
 
+- name: rm -fv ~/dotfiles/*~
+  shell: rm -fv ~/dotfiles/*~
+
 - name: ~/.profile
-  template: src=profile.j2 dest={{ test_path }}/profile
+  template: src=profile.j2 dest={{ test_path }}/profile backup=yes
   tags:
     - bash
 
 - name: ~/.shrc
-  template: src=shrc.j2  dest={{ test_path }}/shrc
+  template: src=shrc.j2  dest={{ test_path }}/shrc backup=yes
   tags:
     - bash
 
 - name: ~/.bashrc
-  template: src=bashrc.j2  dest={{ test_path }}/bashrc
+  template: src=bashrc.j2  dest={{ test_path }}/bashrc backup=yes
+  tags:
+    - bash
+
+- name: ~/.zshrc
+  copy: src=zshrc dest={{ test_path }}/zshrc backup=yes
   tags:
     - bash
 
 - name: ~/.vimrc
-  template: src=vimrc.j2 dest={{ test_path }}/vimrc
+  template: src=vimrc.j2 dest={{ test_path }}/vimrc backup=yes
   tags:
     - vim
 
@@ -39,7 +47,7 @@
     - emacs
 
 - name: ~/.emacs
-  template: src=emacs.j2 dest={{ test_path }}/emacs
+  template: src=emacs.j2 dest={{ test_path }}/emacs backup=yes
   tags:
     - emacs
 
@@ -73,44 +81,44 @@
   #  - v
 
 - name: ~/.tmux.conf
-  template: src=tmux.conf.j2 dest={{ test_path }}/tmux.conf
+  template: src=tmux.conf.j2 dest={{ test_path }}/tmux.conf backup=yes
   tags:
     - tmux
 
 - name: ~/.pythonstartup
-  copy: src=pythonstartup dest={{ test_path }}/pythonstartup
+  copy: src=pythonstartup dest={{ test_path }}/pythonstartup backup=yes
   tags:
     - pystartup
 
 - name: ~/dotfiles/create.links.sh
-  copy: src=create.links.sh dest={{ test_path }}/create.links.sh
+  copy: src=create.links.sh dest={{ test_path }}/create.links.sh backup=yes
   tags:
     - script
 
 - name: ~/dotfiles/screenrc
-  copy: src=screenrc  dest={{ test_path }}/screenrc
+  copy: src=screenrc  dest={{ test_path }}/screenrc backup=yes
 
 - name: ~/dotfiles/gitconfig
-  copy: src=gitconfig  dest={{ test_path }}/gitconfig
+  copy: src=gitconfig  dest={{ test_path }}/gitconfig backup=yes
 
 - name: ~/dotfiles/gitignore
-  copy: src=gitignore dest={{ test_path }}/gitignore
+  copy: src=gitignore dest={{ test_path }}/gitignore backup=yes
 
 - name: ~/dotfiles/Xdefaults
-  copy: src=Xdefaults dest={{ test_path }}/Xdefaults
-  when: desktop | default(false) | bool
+  copy: src=Xdefaults dest={{ test_path }}/Xdefaults backup=yes
+  when: desk | default(false) | bool
 
 - name: ~/dotfiles/pentadactylrc
-  copy: src=pentadactylrc dest={{ test_path }}/pentadactylrc
-  when: desktop | default(false) | bool
+  copy: src=pentadactylrc dest={{ test_path }}/pentadactylrc backup=yes
+  when: desk | default(false) | bool
 
 - name: ~/dotfiles/vimperatorrc
-  copy: src=vimperatorrc dest={{ test_path }}/vimperatorrc
-  when: desktop | default(false) | bool
+  copy: src=vimperatorrc dest={{ test_path }}/vimperatorrc backup=yes
+  when: desk | default(false) | bool
 
 - name: ~/dotfiles/fonts.conf
-  copy: src=fonts.conf dest={{ test_path }}/fonts.conf
-  when: desktop | default(false) | bool
+  copy: src=fonts.conf dest={{ test_path }}/fonts.conf backup=yes
+  when: desk | default(false) | bool
 
 ## ansible default generate config mode : 660 -rw-rw-r--
 - name: find ~/dotfiles -type f | xargs chmod 640
