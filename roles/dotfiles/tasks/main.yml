@@ -2,8 +2,10 @@
 - name: mkdir -pv ~/dotfiles
   file: path=~/dotfiles state=directory
 
-- name: rm -fv ~/dotfiles/*~
-  shell: rm -fv ~/dotfiles/*~
+- name: remove old backup files ~/dotfiles/*~
+  file: path={{ item }} state=absent
+  with_fileglob:
+    - ~/dotfiles/*~
 
 - name: ~/.profile
   template: src=profile.j2 dest={{ test_path }}/profile backup=yes
