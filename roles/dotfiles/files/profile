@@ -1,0 +1,16 @@
+## -*- mode: sh -*-
+
+## NOTE:
+## *login shells* only source `~/.bash_profile` if `~/.bash_profile` `~/.profile` both exist
+## 1. ~/.profile for global ENV and source ~/.bashrc
+## 2. ~/.bash_profile bash-only
+
+if [ $SHELL = '/bin/bash' ]
+then
+    [ -f ~/.bashrc ] && source ~/.bashrc
+elif [ $SHELL = '/bin/zsh' ]
+then
+    [ -f ~/.zshrc ] && source ~/.zshrc
+fi
+
+# vim:set et ft=sh fdm=marker sw=4 sts=4 ts=4 nopaste :

@@ -1,6 +1,7 @@
 
-
 # TODO
+
+# DONE
 
 1. GUI: gui variable define
 2. `sudo su - user` 无法 `source ~/.profile`

@@ -7,119 +7,78 @@
   with_fileglob:
     - ~/dotfiles/*~
 
-- name: ~/.profile
-  template: src=profile.j2 dest={{ test_path }}/profile backup=yes
-  tags:
-    - bash
-
-- name: ~/.shrc
-  template: src=shrc.j2  dest={{ test_path }}/shrc backup=yes
-  tags:
-    - bash
-
-- name: ~/.bashrc
-  template: src=bashrc.j2  dest={{ test_path }}/bashrc backup=yes
-  tags:
-    - bash
-
-- name: ~/.zshrc
-  copy: src=zshrc dest={{ test_path }}/zshrc backup=yes
-  tags:
-    - bash
-
-- name: ~/.vimrc
-  template: src=vimrc.j2 dest={{ test_path }}/vimrc backup=yes
-  tags:
-    - vim
-
-- name: Check emacs verson
-  shell: emacs --version|head -n 1|awk '{print $3}'
-  register: emacs_version
-  tags:
-    - emacs
-
-- debug: var=emacs_version.stdout_lines
-  when: test | default(false) | bool
-  tags:
-    - emacs
-
-- debug: var=emacs_version.stdout.strip()
-  when: test | default(false) | bool
-  tags:
-    - emacs
-
-- name: ~/.emacs
-  template: src=emacs.j2 dest={{ test_path }}/emacs backup=yes
-  tags:
-    - emacs
-
 - name: Check tmux verson
   command: tmux -V
   register: tmux_version
   tags:
-    - tmux
+    - base
 
 - name: Add as Fact for tmux version
   set_fact:
     version: "{{ tmux_version.stdout.strip().split()[1] }}"
   tags:
-    - tmux
+    - base
 
 - debug: var=tmux_version.stdout_lines
   when: test | default(false) | bool
-  #tags:
-  #  - v
+
 - debug: var=tmux_version.stdout.strip()
   when: test | default(false) | bool
-  #tags:
-  #  - v
+
 - debug: var=tmux_version.stdout.strip().split()[1]
   when: test | default(false) | bool
-  #tags:
-  #  - v
+
 - debug: var=version
   when: test | default(false) | bool
-  #tags:
-  #  - v
 
-- name: ~/.tmux.conf
-  template: src=tmux.conf.j2 dest={{ test_path }}/tmux.conf backup=yes
+- name: Check emacs verson
+  shell: emacs --version|head -n 1|awk '{print $3}'
+  register: emacs_version
   tags:
-    - tmux
+    - base
 
-- name: ~/.pythonstartup
-  copy: src=pythonstartup dest={{ test_path }}/pythonstartup backup=yes
+- debug: var=emacs_version.stdout_lines
+  when: test | default(false) | bool
   tags:
-    - pystartup
+    - base
 
-- name: ~/dotfiles/create.links.sh
-  copy: src=create.links.sh dest={{ test_path }}/create.links.sh backup=yes
+- debug: var=emacs_version.stdout.strip()
+  when: test | default(false) | bool
   tags:
-    - script
+    - base
 
-- name: ~/dotfiles/screenrc
-  copy: src=screenrc  dest={{ test_path }}/screenrc backup=yes
+- name: base template
+  template: src={{ item }}.j2 dest={{ test_path }}/{{ item }} backup=yes
+  with_items:
+    - shrc
+    - bashrc
+    - emacs
+    - tmux.conf
+  tags:
+    - base
 
-- name: ~/dotfiles/gitconfig
-  copy: src=gitconfig  dest={{ test_path }}/gitconfig backup=yes
+- name: copy base files
+  copy: src={{ item }}  dest={{ test_path }}/{{ item }} backup=yes
+  with_items:
+    - env
+    - vimrc
+    - profile
+    - screenrc
+    - gitconfig
+    - gitignore
+    - pythonstartup
+    - create.links.sh
+  tags:
+    - base
 
-- name: ~/dotfiles/gitignore
-  copy: src=gitignore dest={{ test_path }}/gitignore backup=yes
-
-- name: ~/dotfiles/Xdefaults
-  copy: src=Xdefaults dest={{ test_path }}/Xdefaults backup=yes
-  when: desk | default(false) | bool
-
-- name: ~/dotfiles/pentadactylrc
-  copy: src=pentadactylrc dest={{ test_path }}/pentadactylrc backup=yes
-  when: desk | default(false) | bool
-
-- name: ~/dotfiles/vimperatorrc
-  copy: src=vimperatorrc dest={{ test_path }}/vimperatorrc backup=yes
-  when: desk | default(false) | bool
-
-- name: ~/dotfiles/fonts.conf
-  copy: src=fonts.conf dest={{ test_path }}/fonts.conf backup=yes
+- name: copy desk files
+  copy: src={{ item }}  dest={{ test_path }}/{{ item }} backup=yes
+  with_items:
+    - zshrc
+    - Xdefaults
+    - pentadactylrc
+    - vimperatorrc
+    - fonts.conf
   when: desk | default(false) | bool
 
 ## ansible default generate config mode : 660 -rw-rw-r--

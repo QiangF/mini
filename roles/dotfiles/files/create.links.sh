@@ -66,8 +66,11 @@ fi
 
 ## NOTE: login shell (sudo su - user) 时，如果 ~/.bash_profile ~/.profile 都存在
 ## bash 加载顺序：匹配 ~/.bash_profile 后不再会加载 ~/.profile （man bash）
-echo "__NOTE: mv -v ~/.bash_profile $HOME/.0.dotfiles"
-[ -f ~/.bash_profile ] && mv -v $HOME/.0.dotfiles
+if [ -f ~/.bash_profile ]
+then
+    echo "__NOTE: mv -v ~/.bash_profile $HOME/.0.dotfiles"
+    mv -v ~/.bash_profile $HOME/.0.dotfiles
+fi
 
 #--------------------------------------------
 # http://stackoverflow.com/questions/5238019/using-bash-to-automate-dotfiles

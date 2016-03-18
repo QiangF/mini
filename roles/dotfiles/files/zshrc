@@ -13,8 +13,12 @@
 # 交互 / 编辑       -->     man zshzle
 # 函数
 
-[ -f ${HOME}/.shrc ] && source ${HOME}/.shrc
-[ -f ${HOME}/.zsh.local ] && source ${HOME}/.zsh.local
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+[ -f ~/.env ] && source ~/.env
+[ -f ~/.shrc ] && source ~/.shrc
+[ -f ~/.zsh.local ] && source ~/.zsh.local
 
 export SHELL=/bin/zsh
 
