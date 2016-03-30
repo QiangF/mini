@@ -18,13 +18,16 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set nocompatible
+set shortmess=atTI      "" must after 'set nocompatible'
 set autoindent
 "set smartindent
 filetype indent on
 autocmd FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 let mapleader = ","
 let g:mapleader = ","
-noremap <           <gv | vnoremap > >gv
+noremap  <C-y>      "+y
+noremap  <C-p>      "+p
+noremap  <          <gv | vnoremap > >gv
 nnoremap j          gj
 nnoremap k          gk
 nnoremap te         :tabedit 
@@ -36,3 +39,4 @@ nnoremap <F2>       :tabnext<CR>
 nnoremap <leader>w  :up<cr>
 nnoremap <leader>k  :bd<cr>
 nnoremap <leader>q  :q<cr>
+cno      xx         $HOME/text/

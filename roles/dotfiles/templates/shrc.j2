@@ -142,7 +142,25 @@ function es {
     fi
 }
 
-{% if gui is defined %}
+function vi {
+    ## change tmux or screen windows title as 'vi'
+    case "$TERM" in screen*) printf '\033kvi\033\\';; esac
+    if [ -f /usr/bin/gvim ]
+    then
+        gvim -v "$@"
+    elif [ -f /usr/bin/vim ]
+    then
+        vim "$@"
+    elif [ -f /usr/bin/vi ]
+    then
+        vi "$@"
+    else
+        echo "__ERROR: NO vi or vim package installed"
+    fi
+}
+
+{# extra var: -e 'desk=True' #}
+{% if desk %}
 
 # [ Xorg X11 ]
 #--------------------------------------------

@@ -108,8 +108,7 @@ RHEL7: GNU Emacs 24.3.1
 (global-set-key "\C-c2" 'mark-whole-line) ;; C-2 NOT work under terminal
 (global-set-key "\C-cd" 'kill-whole-line) ;; C-S-backspace NOT work under terminal
 (global-set-key "\C-cz" 'show-file-name)
-(global-set-key "\M-[" 'comment-toggle-current-line)
-(global-set-key (kbd "C-;") 'comment-toggle-current-line)
+(global-set-key "\C-c;" 'comment-toggle-current-line)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c r") 'revert-buffer)
@@ -117,7 +116,6 @@ RHEL7: GNU Emacs 24.3.1
 ;; https://github.com/mjwall/dotfiles/blob/master/dotemacs.d/init.el
 (global-set-key (kbd "C-x C-b") 'bs-show) ;; bs instead of buffer-menu
 ;; https://github.com/brianwisti/dotfiles/blob/master/emacs.d/init.el
-(global-set-key (kbd "C-;") 'comment-or-uncomment-region)
 ;; https://sites.google.com/site/steveyegge2/effective-emacs
 ;; Invoke M-x without Alt
 ;; (global-set-key "\C-x\C-m" 'execute-extended-command)
