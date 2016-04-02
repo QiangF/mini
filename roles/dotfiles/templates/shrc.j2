@@ -160,7 +160,7 @@ function vi {
 }
 
 {# extra var: -e 'desk=True' #}
-{% if desk %}
+{% if desk is defined and desk %}
 
 # [ Xorg X11 ]
 #--------------------------------------------

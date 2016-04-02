@@ -1,0 +1,51 @@
+---
+
+base_pkg_list:
+  - man
+  - cronie
+  - sudo
+  - git
+  - tmux
+  - tree
+  - bash-completion
+  - tuned
+  - iproute
+  - net-tools
+  - bind-utils
+  - rsyslog
+  - logrotate
+  - virt-what
+  - yum-cron
+  - yum-utils
+  - emacs-nox
+  - vim-enhanced
+  - epel-release
+  - centos-release-scl
+  - centos-release-scl-rh
+
+epel_pkg_list:
+  - ansible
+  - libsodium
+
+scl_pkg_list:
+  - rh-nginx18
+  #- ocserv
+
+ss_build_pkg:
+  - make
+  - gcc
+  - rpm-build
+  - openssl-devel
+
+
+
+
+
+
+
+
+
+
+
+
+

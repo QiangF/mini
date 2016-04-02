@@ -1,14 +1,14 @@
+syntax on
+colorscheme pablo
+set t_Co=256
 set modeline
 set wildmenu
 set wildmode=list:longest
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gbk,gb2312,gb18030,big5,euc-jp,euc-kr,latin1
-syntax on
-set t_Co=256
-colorscheme pablo
-"colorscheme xoria256
 set hlsearch
+set ignorecase smartcase
 set cursorline
 set list
 set listchars=tab:\|\ ,trail:·
@@ -18,10 +18,12 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set nocompatible
-set shortmess=atTI      "" must after 'set nocompatible'
+set shortmess=atTI "" must after 'set nocompatible'
+set autochdir
 set autoindent
 "set smartindent
 filetype indent on
+autocmd FileType make setlocal noexpandtab "" Makefile makefile *.mk
 autocmd FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 let mapleader = ","
 let g:mapleader = ","
@@ -40,3 +42,10 @@ nnoremap <leader>w  :up<cr>
 nnoremap <leader>k  :bd<cr>
 nnoremap <leader>q  :q<cr>
 cno      xx         $HOME/text/
+if(has("gui_running"))
+    set winaltkeys=no
+    set guioptions-=T
+    set guioptions-=r
+    colorscheme slate
+    "colorscheme xoria256
+endif

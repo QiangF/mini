@@ -1,0 +1,18 @@
+---
+- name: install base packages
+  yum: name={{ item }} state=latest
+  with_items: "{{ base_pkg_list }}"
+  tags:
+    - pkg
+
+- name: install epel packages
+  yum: name={{ item }} state=latest
+  with_items: "{{ epel_pkg_list }}"
+  tags:
+    - pkg
+
+- name: install SCL packages
+  yum: name={{ item }} state=latest
+  with_items: "{{ scl_pkg_list }}"
+  tags:
+    - pkg
