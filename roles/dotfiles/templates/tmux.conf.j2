@@ -1,3 +1,10 @@
+{% set tv = tmux_version.stdout.strip().split()[1] %}
+
+{#-
+{% set tv = tmux_version.stdout.strip().split()[1]|float %}
+{% if tv >= 2.0 %}
+-#}
+
 ## XXX help info
 ## --------------------------------------------
 ## tmux show -g             ## global config
@@ -14,7 +21,9 @@ set -g default-terminal "screen-256color"
 ## tmux set status-right " "#{=21:pane_title}" %F %H:%M"
 #set -g status-right " "#{=21:pane_title}" %H:%M %F"
 
+{% if version | version_compare('2.2', '<') %}
 setw -g utf8 on
+{% endif %}
 setw -g mode-keys vi
 
 unbind C-b
@@ -37,13 +46,9 @@ bind R source-file ~/.tmux.conf \; display 'Reloaded tmux config.'
 ## black : colour0 dark colour8 light
 set -g status-bg colour8
 set -g status-fg white
-## status-style would make status bg color be same as terminal bg (trans)
+
+## 'status-style' would make status-bar bg color be same as terminal bg (transparent)
 ## bright(bold)
-{#
-{% set tv = tmux_version.stdout.strip().split()[1]|float %}
-{% if tv >= 2.0 %}
-#}
-{% set tv = tmux_version.stdout.strip().split()[1] %}
 {% if version | version_compare('2.0', '>=') %}
 #set -g status-style bright
 set -g status-style default

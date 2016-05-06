@@ -18,6 +18,8 @@ nnoremap <leader>r :restart<CR>
 nnoremap <leader>s :source ~/.vimperatorrc<CR>
 nnoremap <C-Q> <C-W>
 
+map <F2> :set gui=invnavigation<CR>
+
 set     nextpattern+='^››$','^››','››$','\s*下一页|下一张|下一章|下一篇|下一頁|下页|后页\s*','^\s*Next Page\s*$','^\s*Next [>»]'
 set previouspattern+='^‹‹$','^‹‹','‹‹$','\s*上一页|上一张|下一章|上一篇|上一頁|上页|前页\s*','^\s*Prev(ious)? Page\s*$','[<«] Prev\s*$'
 
@@ -30,6 +32,7 @@ hi CmdLine color: black; background: #CCCCCC;
 "" :echo document.getElementById("liberator-status")
 "" <xul:toolbaritem id="liberator-status" liberator:highlight="StatusLine" ... liberatorposition="1">
 
-"source! /home/i/.vimperatorrc.local
+"" source share cabbrev with pentadactyl
+source! ~/.vimper.ca
 
 " vim: set ft=vim:

@@ -19,26 +19,7 @@ set     nextpattern+='^››$','^››','››$','\s*下一页|下一张|下�
 set previouspattern+='^‹‹$','^‹‹','‹‹$','\s*上一页|上一张|下一章|上一篇|上一頁|上页|前页\s*'
 set passkeys+=mail.google.com:jk<CR>,gi
 
-" 命令行 模式 缩写，打出以下缩写之后，再加一个空格展开缩写！
-cabbrev ..  127.0.0.1
-cabbrev ,,  https://
-cabbrev cf  about:config
-cabbrev ss  https://
-cabbrev g   google.com.hk
-cabbrev gf  google.com.hk/finance?hl=zh-CN&sourceid=cnhp
-cabbrev gp  ditu.google.cn/maps?hl=zh-cn&tab=wl
-cabbrev gi  images.google.com
-cabbrev gt  translate.google.com/#en|zh-CN|
-cabbrev ge  https://encrypted.google.com
-cabbrev gm  https://mail.google.com
-cabbrev tt  https://twitter.com
-cabbrev it  https://github.com/lvii
-cabbrev bd  baidu.com
-cabbrev bt  torrentz.eu
-cabbrev db  douban.com
-cabbrev wx  wx.qq.com
-cabbrev tb  taobao.com
-cabbrev yd  dict.youdao.com
+source! ~/.vimper.ca
 
 " [ 自定义快捷键 ]
 "--------------------------------------------
@@ -58,8 +39,7 @@ map -b -m normal J <C-d>
 map -b -m normal K <C-u>
 
 " Menu 显示/隐藏 菜单栏 开关
-map <F2> :set guioptions!=m<CR>
-map <F3> :set guioptions!=T<CR>
+map <F2> :set guioptions!=T<CR>
 
 " 停止 加载页面
 map -b s <C-c>

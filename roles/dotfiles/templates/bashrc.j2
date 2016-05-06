@@ -102,11 +102,13 @@ if [[ ${EUID} == 0 ]] ; then
     ## root use  ${PWD} absolute path
     prompt_str=' \[\e[1;31m\]\u@${HOSTNAME} \[\e[01;34m\]${PWD} \n \$ '
     ## sudo su - 切换到 root 用户 tmux title 格式 user@host path
-    path_title='\[\ek\u@\h:\w\e\\\]'
+    # path_title='\[\ek\u@\h:\w\e\\\]'
 else
     prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ '
-    path_title='\[\ek\W\e\\\]'
+    # path_title='\[\ek\W\e\\\]'
 fi
+
+path_title='\[\ek\u@\h:\w\e\\\]'
 
 # if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
 #     PS1_HOSTNAME=

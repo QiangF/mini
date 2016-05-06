@@ -1,0 +1,16 @@
+" 命令行 模式 缩写，打出以下缩写之后，再加一个 '空格' or 'Ctrl-]'  展开缩写！
+cabbrev ..  127.0.0.1
+cabbrev cc  about:config
+cabbrev ss  https://
+cabbrev db  https://www.dropbox.com
+cabbrev gg  https://www.google.com/ncr
+cabbrev gi  https://images.google.com
+cabbrev gm  https://mail.google.com
+cabbrev gp  https://ditu.google.cn/maps?hl=zh-cn&tab=wl
+cabbrev gt  https://translate.google.com/#en|zh-CN|
+cabbrev tt  https://twitter.com
+cabbrev it  https://github.com/lvii
+cabbrev tb  https://taobao.com
+cabbrev wx  https://wx.qq.com
+cabbrev yd  https://dict.youdao.com
+cabbrev zz  https://zhihu.com
