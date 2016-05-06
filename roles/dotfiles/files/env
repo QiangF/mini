@@ -5,13 +5,10 @@ export LANG=en_US.UTF-8
 #export PATH=${PATH}:${HOME}/bin/:${HOME}/code/shell
 #export CDPATH=.:..:../..:${HOME}
 
-## psql 替换 more
-export PAGER=less
-export LESS="-i -R -M --shift 5"    ## gentoo default tmux could clean screen after exit 'man' or 'less'
-#export LESS="-iMSx4 -RFX"          ## XXX -R 参数 gentoo man 手册  ESC[m /etc/env.d/70less
+export PAGER=less                   ## FOR psql : replace default PAGER (more)
+export LESS="-iFRMx4 --shift 5"     ## '-X' option NOT clear screen
 export LESSCHARSET=UTF-8            ## fix git diff show UTF8 encoded characters properly
 export EDITOR="vi"
-
 export MYSQL_PS1="[\\u@\\h \\d]"
 
 # [ man 手册 颜色 ]

@@ -142,6 +142,9 @@ function es {
     fi
 }
 
+## Fedora default alias vi='vim'
+unalias vi
+
 function vi {
     ## change tmux or screen windows title as 'vi'
     case "$TERM" in screen*) printf '\033kvi\033\\';; esac
