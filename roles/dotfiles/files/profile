@@ -5,6 +5,9 @@
 ## 1. ~/.profile for global ENV and source ~/.bashrc
 ## 2. ~/.bash_profile bash-only
 
+TIMESTAMP=$(date +"%F %T")
+echo "__~/.PROFILE: $TIMESTAMP PPID $PPID PID $PID $0" >> /tmp/.shrc
+
 if [ $SHELL = '/bin/bash' ]
 then
     [ -f ~/.bashrc ] && source ~/.bashrc

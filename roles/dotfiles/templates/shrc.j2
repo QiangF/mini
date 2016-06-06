@@ -143,7 +143,7 @@ function es {
 }
 
 ## Fedora default alias vi='vim'
-unalias vi
+alias vi &> /dev/null && unalias vi
 
 function vi {
     ## change tmux or screen windows title as 'vi'

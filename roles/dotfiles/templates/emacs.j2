@@ -13,6 +13,20 @@ RHEL7: GNU Emacs 24.3.1
 
 ;; emacs -q --load path-to-custom-init.el
 
+;; minor mode
+(global-hl-line-mode 1)
+(global-auto-revert-mode 1)
+(scroll-lock-mode 0)
+(blink-cursor-mode 0)
+(menu-bar-mode 0)
+(line-number-mode 1)
+(column-number-mode 1)
+(show-paren-mode 1)
+;; overwrite selected text
+(delete-selection-mode t)
+;; http://stackoverflow.com/questions/1229142/how-can-i-save-my-mini-buffer-history-in-emacs
+(savehist-mode 1)
+
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq ediff-split-window-function 'split-window-horizontally) ;; '|' key swap horizontal <-> vertical
@@ -30,18 +44,20 @@ RHEL7: GNU Emacs 24.3.1
 ;;                                           space-after-tab tabs tab-mark)
 (setq indent-line-function 'insert-tab)
 ;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
-
-;; minor mode
-(global-hl-line-mode 1)
-(global-auto-revert-mode 1)
-(scroll-lock-mode 0)
-(blink-cursor-mode 0)
-(menu-bar-mode 0)
-(line-number-mode 1)
-(column-number-mode 1)
-(show-paren-mode 1)
 (setq show-paren-delay 0)
 (setq show-paren-style 'parentheses)
+;; savehist-mode
+(setq history-length t)
+(setq history-delete-duplicates t)
+;; Default : only save minibuffer histories
+;; (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+;; dhttps://github.com/yinwang0/config-files/commits/master
+(setq sentence-end "\\([¡££¡£¿]\\|¡­¡­\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+(setq sentence-end-double-space nil)
+;; Calendar start from Monday
+(setq calendar-week-start-day 1)
+(setq mouse-yank-at-point t)
+
 
 ;; 避免帮助文档变为中文，即使 LANG=zh_CN.UTF-8 环境变量运行 emacs
 ;; C-x <RET> l 补全变量取值 或 查看 var: language-info-alist 语言列表
@@ -210,15 +226,18 @@ RHEL7: GNU Emacs 24.3.1
     ;; 只显示一侧 fringe
     ;;(set-fringe-style '(8 . 0))
     ;; 窗口 "位置 position" (top left) "大小 size" (height width)
-    (setq default-frame-alist '((top . 80) (left . 80) (height . 37) (width . 100)))
+    (setq default-frame-alist '((top . 0) (left . 160) (height . 39) (width . 110)))
     ;; 等宽：中文字体 == 2 个英文字体
     ;; http://donneryst.com/blog/emacs中达成中英文混排表格对齐效果.html
+
     ;; Dejavu Sans Mono 10 文泉驿等宽微米黑 12
-    ;; Envy Code R 11 文泉驿等宽微米黑 12
-    ;;(set-default-font "Dejavu Sans Mono 10:bold")
-    (set-fontset-font "fontset-default" 'unicode "WenQuanyi Micro Hei Mono 12")
-    ;; (add-to-list 'default-frame-alist '(font . "Envy Code R-11:weight=bold:antialias=0"))
-    (add-to-list 'default-frame-alist '(font . "Envy Code R-11:antialias=1"))
+    (set-fontset-font "fontset-default" 'unicode "WenQuanyi Micro Hei Mono 13")
+    (add-to-list 'default-frame-alist '(font . "Bitstream Vera Sans Mono-11:antialias=1"))
+
+    ;; ;; Envy Code R 11 文泉驿等宽微米黑 12
+    ;; (set-fontset-font "fontset-default" 'unicode "WenQuanyi Micro Hei Mono 12")
+    ;; (add-to-list 'default-frame-alist '(font . "Envy Code R-11:antialias=1"))
+
     ;; Prelude config: display file path as GUI window(frame) title
     ;; http://emacsredux.com/blog/2013/04/07/display-visited-files-path-in-the-frame-title/
     (setq frame-title-format
@@ -242,3 +261,9 @@ RHEL7: GNU Emacs 24.3.1
     )
   (customize-gui-setting)
 )
+
+
+;; custom
+;; ----------------------------------------------------------------------------------------
+(setq custom-file "~/.emacs.d/custom-settings.el")
+(load custom-file t)

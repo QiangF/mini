@@ -48,6 +48,28 @@ http://mywiki.wooledge.org/DotFiles
 
 bash-only variables like `HISTSIZE` (this is not an environment variable, don't `export` it!)
 
+## /etc/profile.d/
+
+`/etc/profile.d/vim.sh` 中定义的 vi alias 会覆盖 `~/.shrc` 中定义的 vi function
+
+`/etc/profile` 和 `/etc/bashrc` 都有下面的配置：
+
+
+```
+for i in /etc/profile.d/*.sh ; do
+    if [ -r "$i" ]; then
+        if [ "${-#*i}" != "$-" ]; then·
+            . "$i"
+        else
+            . "$i" >/dev/null
+        fi
+    fi
+done
+```
+
+`/etc/bashrc` 之在 `if ! shopt -q login_shell` 才会 `source` 上面的文件
+
+
 ## PROMPT $PS1
 
     # echo $PS1
