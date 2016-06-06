@@ -101,9 +101,26 @@ done
     ------------------------------------------------------------------------
     033   27    1B    ESC (escape)                133   91    5B    [ ]
 
+# tmux
 
+## non-login shell
 
+tmux 默认启动的是 **login-shell** 每次都会 `source ~/.profile` ：
 
+    __~/.PROFILE: 2016-06-06 21:40:44 PPID 2585 PID  -bash
+    __~/.BASHRC: 2016-06-06 21:40:44 PPID 2585 PID  -bash
+
+配置 `default-command` 参数，禁用默认 **login-shell** 启动 **non-login shell** :
+
+https://wiki.archlinux.org/index.php/tmux#Start_a_non-login_shell
+
+    set -g default-command "${SHELL}"
+
+修改之后 tmux 启动新 pane 只 `source ~/.bashrc` ：
+
+    __~/.BASHRC: 2016-06-07 00:24:11 PPID 5242 PID  /bin/bash
+
+可以查看 `man tmux` 关于 `default-command` 和 `default-shell` 的区别
 
 
 

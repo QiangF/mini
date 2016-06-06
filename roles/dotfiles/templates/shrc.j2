@@ -142,8 +142,8 @@ function es {
     fi
 }
 
-## Fedora default alias vi='vim'
-alias vi &> /dev/null && unalias vi
+## RHEL | CentOS | Fedora vim-enhanced rpm `/etc/profile.d/vim.sh` alias vi='vim'
+alias vi >/dev/null 2>&1 && unalias vi
 
 function vi {
     ## change tmux or screen windows title as 'vi'

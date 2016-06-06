@@ -18,6 +18,10 @@ set -g pane-base-index 1
 set -g history-limit 20480
 set -g display-panes-time 1600
 set -g default-terminal "screen-256color"
+## disable tmux default spawn login shell
+## https://wiki.archlinux.org/index.php/tmux#Start_a_non-login_shell
+set -g default-command "${SHELL}"
+
 ## tmux set status-right " "#{=21:pane_title}" %F %H:%M"
 #set -g status-right " "#{=21:pane_title}" %H:%M %F"
 

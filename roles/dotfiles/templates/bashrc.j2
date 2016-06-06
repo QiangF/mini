@@ -122,9 +122,6 @@ path_title='\[\ek\u@\h:\w\e\\\]'
 case "$TERM" in
     screen*)
 
-        ## Fedora 24 tmux vi alias
-        unalias vi
-
         function ssh {
             local ssh_args=`echo $1|sed 's:.*@::'`
             echo -n -e "\ek@${ssh_args}\e\\"
