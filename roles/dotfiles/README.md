@@ -122,7 +122,9 @@ https://wiki.archlinux.org/index.php/tmux#Start_a_non-login_shell
 
 可以查看 `man tmux` 关于 `default-command` 和 `default-shell` 的区别
 
+# ssh
 
+ssh 禁用 `Compression` 不然会 **降低 scp 速度** 1000Mb 网卡 scp 速度只能达到 100Mb
 
 
 

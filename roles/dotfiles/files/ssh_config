@@ -3,11 +3,11 @@ ForwardAgent no
 GatewayPorts no
 StrictHostKeyChecking no
 UserKnownHostsFile /dev/null
+Compression no
 ControlMaster auto
 ControlPath /tmp/ssh_%r@%h:%p
 ControlPersist 4h
 AddressFamily inet
-Compression yes
 ServerAliveInterval 120
 
 Host github.com
