@@ -68,8 +68,3 @@ set -g status-right '#[bg=white,fg=colour8] #(cut -d " " -f 1-3 /proc/loadavg) #
 #set -g status-right '#[bg=color8]#[fg=white] %m-%d %H:%M #[default]'
 setw -g window-status-format '#[bg=white,fg=black] #I #[bg=colour8,fg=white] #W '
 setw -g window-status-current-format '#[bg=white,fg=black] #I #[bg=white,fg=black] #W '
-
-## {{ ansible_managed }}
-## [Ansible]
-## var : tv = {{ tv }}
-## var : tmux_version = {{ tmux_version.stdout }}

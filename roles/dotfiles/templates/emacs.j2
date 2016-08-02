@@ -197,7 +197,6 @@ RHEL7: GNU Emacs 24.3.1
 (set-face-underline 'highlight nil)
 
 {% set ev = emacs_version.stdout.strip() %}
-;; emacs version: {{ ev }}
 {% if ev | version_compare('24.1.1', '>=') %}
 ;; NOTE: copy/paste 代码如果有括号，会导致多余的补全
 (electric-pair-mode 1)
