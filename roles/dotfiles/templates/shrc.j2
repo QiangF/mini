@@ -136,9 +136,16 @@ alias less='less -iR'
 
 alias tx='tmux -2u'
 
-## NOTE: ee function or alias can NOT auto complete **filename** with TAB, but can with 'M-/'
+## NOTE: 'ee' function or alias can NOT auto complete **filename** with TAB, but can with 'M-/'
 # function ee { emacsclient -a "" -t "$@"; }
 # alias ee='emacsclient -t -a ""'
+
+function emacs {
+    ## change tmux or screen windows title as 'emacs'
+    case "$TERM" in screen*) printf '\033kemacs\033\\';; esac
+    ## terminal : emaca -nw
+    emacs -nw "$@"
+}
 
 function en {
     ## change tmux or screen windows title as 'emacs'
@@ -172,15 +179,15 @@ function vi {
     case "$TERM" in screen*) printf '\033kvi\033\\';; esac
     if [ -f /usr/bin/gvim ]
     then
-        gvim -v "$@"
+        /usr/bin/gvim -v "$@"
     elif [ -f /usr/bin/vim ]
     then
-        vim "$@"
+        /usr/bin/vim "$@"
     elif [ -f /usr/bin/vi ]
     then
-        vi "$@"
+        /usr/bin/vi -u NONE "$@"
     else
-        echo "__ERROR: NO vi or vim package installed"
+        echo "__ERROR: NO 'vi' or 'vim' package installed"
     fi
 }
 

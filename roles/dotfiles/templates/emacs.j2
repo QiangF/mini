@@ -1,67 +1,78 @@
 ;; -*- mode: emacs-lisp -*-
 
-{#-
-RHEL6: GNU Emacs 23.1.1
-RHEL7: GNU Emacs 24.3.1
-#}
-
-;; TODO
-;; default Nonincremental Search
-;; C-x C-f no default path
-;; swap windows layout
-;; no last empty line break
-
 ;; emacs -q --load path-to-custom-init.el
 
+;; NOTE: C-q C-l insert ^L (page break) char, C-x [ forward-page C-x ] narrow-to-page
+;; NOT wrap long lines: '^L' page-break-lines
+;; (setq truncate-lines t)
+
+
 ;; minor mode
+;; ----------------------------------------------------------------------------------------
+(blink-cursor-mode 0)
+;; (column-number-mode 1)
+;; (line-number-mode 1)
+(menu-bar-mode 0)
+(delete-selection-mode t)                                           ;; overwrite selected text
 (global-hl-line-mode 1)
 (global-auto-revert-mode 1)
 (scroll-lock-mode 0)
-(blink-cursor-mode 0)
-(menu-bar-mode 0)
-(line-number-mode 1)
-(column-number-mode 1)
-(show-paren-mode 1)
-;; overwrite selected text
-(delete-selection-mode t)
-;; http://stackoverflow.com/questions/1229142/how-can-i-save-my-mini-buffer-history-in-emacs
-(savehist-mode 1)
 
+
+;; emacs base setting
+;; ----------------------------------------------------------------------------------------
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
-(setq ediff-split-window-function 'split-window-horizontally) ;; '|' key swap horizontal <-> vertical
-(setq tramp-default-method "ssh")
+(setq ediff-split-window-function 'split-window-horizontally)       ;; '|' key swap horizontal <-> vertical
+
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Major-Modes.html
 (setq initial-major-mode 'text-mode)
 (setq-default major-mode 'text-mode)
+
 (setq-default make-backup-files nil)
 (setq-default echo-keystrokes 0.1)
 (setq-default vc-follow-symlinks t)
-(setq-default show-trailing-whitespace t) ;; M-x whitespace-mode
-(setq-default tab-width 4)
+
+(setq-default show-trailing-whitespace t)                           ;; M-x whitespace-mode
 (setq-default indent-tabs-mode nil)
-;; (setq-default whitespace-style '(trailing space-before-tab indentation
-;;                                           space-after-tab tabs tab-mark)
+(setq-default tab-width 4)
+;; ;; (setq-default whitespace-style '(trailing space-before-tab indentation
+;; ;;                                           space-after-tab tabs tab-mark)
 (setq indent-line-function 'insert-tab)
-;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
-(setq show-paren-delay 0)
-(setq show-paren-style 'parentheses)
-;; savehist-mode
-(setq history-length t)
-(setq history-delete-duplicates t)
-;; Default : only save minibuffer histories
-;; (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-;; dhttps://github.com/yinwang0/config-files/commits/master
-(setq sentence-end "\\([¡££¡£¿]\\|¡­¡­\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
-(setq sentence-end-double-space nil)
+;; ;; (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
+
 ;; Calendar start from Monday
 (setq calendar-week-start-day 1)
 (setq mouse-yank-at-point t)
 
+(setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+(setq sentence-end-double-space nil)
 
+(show-paren-mode 1)
+;;(electric-pair-mode 1)                                              ;; 粘贴代码如果有括号，会导致多余的补全
+(setq show-paren-delay 0)
+(setq show-paren-style 'parentheses)
+
+;; M-x customize-variable RET tramp-verbose RET
+(setq tramp-default-method "ssh")                                   ;; C-h v tramp-methods
+
+
+;; History
+;; ----------------------------------------------------------------------------------------
+;; savehist-mode
+;; http://stackoverflow.com/questions/1229142/how-can-i-save-my-mini-buffer-history-in-emacs
+(savehist-mode 1)
+(setq history-length t)
+(setq history-delete-duplicates t)
+;; Default : only save minibuffer histories
+;; (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+
+
+;; UTF-8
+;; ----------------------------------------------------------------------------------------
 ;; 避免帮助文档变为中文，即使 LANG=zh_CN.UTF-8 环境变量运行 emacs
 ;; C-x <RET> l 补全变量取值 或 查看 var: language-info-alist 语言列表
-;(set-language-environment 'UTF-8)
+;; (set-language-environment 'UTF-8)
 (set-language-environment 'English)
 
 ;; FUCK all NO UTF-8 coding...
@@ -77,6 +88,9 @@ RHEL7: GNU Emacs 24.3.1
 (set-selection-coding-system 'utf-8)
 (set-file-name-coding-system 'utf-8)
 
+;; Be quick
+;; ----------------------------------------------------------------------------------------
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; http://www.emacswiki.org/emacs/WinnerMode
@@ -84,17 +98,18 @@ RHEL7: GNU Emacs 24.3.1
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-
+
 ;; function
-;; --------------------------------------------
+;; ----------------------------------------------------------------------------------------
 
 ;; http://stackoverflow.com/questions/3669511/the-function-to-show-current-files-full-path-in-mini-buffer
 (defun show-file-name ()
   "Show the full path file name in  minibuffer, and copy file name to kill ring."
   (interactive)
   (message (buffer-file-name))
-  (kill-new (file-truename buffer-file-name))
-  )
+  (kill-new (file-truename buffer-file-name)))
+
+(global-set-key "\C-cz" 'show-file-name)
 
 ;; http://emacs.stackexchange.com/questions/2347/kill-or-copy-current-line-with-minimal-keystrokes
 (defun mark-whole-line ()
@@ -102,8 +117,9 @@ RHEL7: GNU Emacs 24.3.1
   (interactive)
   (move-beginning-of-line nil)
   (set-mark-command nil)
-  (move-end-of-line nil)
-  )
+  (move-end-of-line nil))
+
+(global-set-key "\C-c2" 'mark-whole-line) ;; C-2 NOT work under terminal
 
 ;; thanks b4283@emacs-tw https://gist.github.com/403ff42ede3360a20b4a
 (defun comment-toggle-current-line ()
@@ -111,31 +127,37 @@ RHEL7: GNU Emacs 24.3.1
   (interactive)
   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
 
+(global-set-key "\C-c;" 'comment-toggle-current-line)
 
-
+
 ;; hotkey
-;; --------------------------------------------
+;; ----------------------------------------------------------------------------------------
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html
 ;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Backspace-invokes-help.html
 
 (global-set-key [?\C-h] 'delete-backward-char) ;; C-M-backsppace --> C-M-h
 (global-set-key [f1] 'help-command)
+
 (global-set-key (kbd "C-\\") 'set-mark-command)
-(global-set-key "\C-c2" 'mark-whole-line) ;; C-2 NOT work under terminal
+
+;; (global-set-key "\r" 'newline-and-indent)
+
 (global-set-key "\C-cd" 'kill-whole-line) ;; C-S-backspace NOT work under terminal
-(global-set-key "\C-cz" 'show-file-name)
-(global-set-key "\C-c;" 'comment-toggle-current-line)
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c y") 'bury-buffer)
-(global-set-key (kbd "C-c r") 'revert-buffer)
-(global-set-key "\r" 'newline-and-indent)
-;; https://github.com/mjwall/dotfiles/blob/master/dotemacs.d/init.el
-(global-set-key (kbd "C-x C-b") 'bs-show) ;; bs instead of buffer-menu
+;; (global-set-key (kbd "C-c o") 'occur)
+
 ;; https://github.com/brianwisti/dotfiles/blob/master/emacs.d/init.el
 ;; https://sites.google.com/site/steveyegge2/effective-emacs
 ;; Invoke M-x without Alt
-;; (global-set-key "\C-x\C-m" 'execute-extended-command)
+;; (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)
+
+;; (global-set-key (kbd "C-c r") 'revert-buffer)
+;; (global-set-key (kbd "C-c y") 'bury-buffer)
+(global-set-key (kbd "C-c w") 'delete-trailing-whitespace)
+
+;; https://github.com/mjwall/dotfiles/blob/master/dotemacs.d/init.el
+(global-set-key (kbd "C-x C-b") 'bs-show) ;; bs instead of buffer-menu
+
 ;; https://github.com/xiaohanyu/oh-my-emacs/blob/master/core/ome-keybindings.org
 ;; hippie expand is dabbrev expand on steroids
 (setq hippie-expand-try-functions-list
@@ -145,25 +167,17 @@ RHEL7: GNU Emacs 24.3.1
         try-complete-file-name-partially
         try-complete-file-name))
 (global-set-key (kbd "M-/") 'hippie-expand)
-(global-set-key (kbd "C-c o") 'occur)
 
+
 ;; hook
-;; --------------------------------------------
-
-;; ;; Markdown
-;; (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-;; (add-to-list 'auto-mode-alist '("\\.mkd$" . markdown-mode))
-;; (add-hook 'markdown-mode-hook (lambda () (visual-line-mode t)))
-
-;(add-hook 'text-mode-hook (lambda () (setq indent-tabs-mode nil)))
+;; ----------------------------------------------------------------------------------------
 
 ;; (defun my-c-mode-config ()
 ;;   (whitespace-mode 1)
 ;;   (setq indent-tabs-mode t
 ;;   tab-width        4
 ;;   c-basic-offset   4))
-
-(add-hook 'c-mode-hook 'my-c-mode-config)
+;; (add-hook 'c-mode-hook 'my-c-mode-config)
 
 ;; (eval-after-load "cc-mode"
 ;;   '(define-key c-mode-map (kbd "TAB") 'self-insert-command))
@@ -176,25 +190,40 @@ RHEL7: GNU Emacs 24.3.1
 
 ;; http://www.emacswiki.org/emacs/EmacsLispMode
 (add-hook 'emacs-lisp-mode-hook
-  (lambda ()
-    (setq tab-width 2)
-    ;; Keep M-TAB for `completion-at-point'
-    (define-key flyspell-mode-map "\M-\t" nil)
-    ;; Pretty-print eval'd expressions.
-    (define-key emacs-lisp-mode-map
-      "\C-x\C-e" 'pp-eval-last-sexp)
-    ;; Recompile if .elc exists.
-    (add-hook (make-local-variable 'after-save-hook)
-      (lambda ()
-        (byte-force-recompile default-directory)))
-    (define-key emacs-lisp-mode-map
-      "\r" 'reindent-then-newline-and-indent)))
+          (lambda ()
+            (setq tab-width 2)
+            ;; Keep M-TAB for `completion-at-point'
+            (define-key flyspell-mode-map "\M-\t" nil)
+            ;; Pretty-print eval'd expressions.
+            (define-key emacs-lisp-mode-map
+              "\C-x\C-e" 'pp-eval-last-sexp)
+            ;; Recompile if .elc exists.
+            (add-hook (make-local-variable 'after-save-hook)
+                      (lambda ()
+                        (byte-force-recompile default-directory)))
+            (define-key emacs-lisp-mode-map
+              "\r" 'reindent-then-newline-and-indent)))
 
+
+;; package setting
+;; ----------------------------------------------------------------------------------------
 
+;; ;; markdown
+;; (autoload 'markdown-mode "markdown-mode"
+;;   "Major mode for editing Markdown files" t)
+;; (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+;; (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+;; (add-to-list 'auto-mode-alist '("\\.mkd$" . markdown-mode))
+;; ;; (add-to-list 'auto-mode-alist '("\\.mk?d\\'" . markdown-mode))
+;; ;; (add-hook 'markdown-mode-hook (lambda () (visual-line-mode t)))
+
+;; (autoload 'gfm-mode "markdown-mode"
+;;   "Major mode for editing GitHub Flavored Markdown files" t)
+;; (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
+
 ;; theme GUI font ...
-;; --------------------------------------------
-
-(set-face-underline 'highlight nil)
+;; ----------------------------------------------------------------------------------------
 
 {% set ev = emacs_version.stdout.strip() %}
 {% if ev | version_compare('24.1.1', '>=') %}
@@ -206,14 +235,24 @@ RHEL7: GNU Emacs 24.3.1
 ;; (load-theme 'solarized-light t)
 {% endif %}
 
+;; terminal
+(set-face-underline 'highlight nil)                                 ;; M-x describe-face <RET> highlight
+(set-face-attribute hl-line-face nil :underline nil)                ;; M-x describe-face <RET> hl-line
+
+;; undefine emacs background under terminal for transparent
+;; http://stackoverflow.com/questions/19054228/emacs-disable-theme-background-color-in-terminal
+(defun on-after-init ()
+  (unless (display-graphic-p (selected-frame))
+    (set-face-background 'default "unspecified-bg" (selected-frame))))
+(add-hook 'window-setup-hook 'on-after-init)
+
 ;; GUI 配置放在后面，避免 color theme 主题里面自带的配置覆盖
 (defun customize-gui-setting ()
+  "custom GUI setting"
   ;; http://stackoverflow.com/questions/5795451/how-to-detect-that-emacs-is-in-terminal-mode
   ;; (when (display-graphic-p)
   (when window-system
     "setting for emacs GUI mode"
-    (scroll-bar-mode 0)
-    (tool-bar-mode 0)
     ;; 取消 mode-line 状态栏 status bar 3D 样式。放在 theme 前会被主题样式覆盖
     ;; http://www.svenhartenstein.de/Software/Emacs
     ;; http://ldc.usb.ve/docs/emacs/Optional-Mode-Line.html
@@ -222,44 +261,65 @@ RHEL7: GNU Emacs 24.3.1
     (set-face-attribute 'mode-line-highlight nil :box nil
                         :background "light sky blue"
                         :weight 'bold)
-    ;; 只显示一侧 fringe
-    ;;(set-fringe-style '(8 . 0))
+
+    ;; (set-fringe-style '(8 . 0))    ;; 只显示一侧 fringe
+    ;; (window-height) (window-width) ;; 查询 window size
+
     ;; 窗口 "位置 position" (top left) "大小 size" (height width)
     (setq default-frame-alist '((top . 0) (left . 160) (height . 39) (width . 110)))
-    ;; 等宽：中文字体 == 2 个英文字体
-    ;; http://donneryst.com/blog/emacs中达成中英文混排表格对齐效果.html
 
-    ;; Dejavu Sans Mono 10 文泉驿等宽微米黑 12
-    (set-fontset-font "fontset-default" 'unicode "WenQuanyi Micro Hei Mono 13")
-    (add-to-list 'default-frame-alist '(font . "Bitstream Vera Sans Mono-11:antialias=1"))
+    ;; | English Font             | Size | 中文字体     | 中文字号 |
+    ;; |--------------------------+------+--------------+----------|
+    ;; | Bitstream Vera Sans Mono |   11 | 文泉驿微米黑 |     13.5 |
+    ;; | Dejavu Sans Mono         |   10 | 文泉驿微米黑 |       12 |
+    ;; | Envy Code R              |   11 | 文泉驿微米黑 |       12 |
 
-    ;; ;; Envy Code R 11 文泉驿等宽微米黑 12
-    ;; (set-fontset-font "fontset-default" 'unicode "WenQuanyi Micro Hei Mono 12")
-    ;; (add-to-list 'default-frame-alist '(font . "Envy Code R-11:antialias=1"))
+    (cond
+     ((string-equal system-type "windows-nt")
+      ;; https://github.com/wenbinye/dot-emacs/blob/master/config/my-fontset.el
+      (add-to-list 'default-frame-alist '(font . "Consolas-11"))
+      (set-fontset-font "fontset-default" 'unicode "Microsoft Yahei-14")
+      )
+     ((string-equal system-type "darwin")
+      (add-to-list 'default-frame-alist '(font . "Menlo-14"))
+      (set-fontset-font "fontset-default" 'unicode "PingFang SC-16")
+      )
+     (t ;; GNU/Linux or BSD
+      ;; (string-equal system-type "gnu/linux")
+      ;; (add-to-list 'default-frame-alist '(font . "Bitstream Vera Sans Mono-11:antialias=1:autohint=0:hinting=1:hintstyle=1"))
+      (add-to-list 'default-frame-alist '(font . "Bitstream Vera Sans Mono-11:antialias=1"))
+      (set-fontset-font "fontset-default" 'unicode "WenQuanyi Micro Hei Mono-13.5")
+      )
+     )
+
+    ;; | Font     | How to ajust font size                     |
+    ;; |----------+--------------------------------------------|
+    ;; | 中文字体 | 直接 `C-x C-e` 执行配置                    |
+    ;; | 英文字体 | `M-x customize-face` 输入 default 进入设置 |
+
+    ;; ;; 确保诸如 ○ 等特殊字符是双字符宽度
+    ;; (use-cjk-char-width-table 'zh_CN)
 
     ;; Prelude config: display file path as GUI window(frame) title
     ;; http://emacsredux.com/blog/2013/04/07/display-visited-files-path-in-the-frame-title/
     (setq frame-title-format
-      '((:eval (if (buffer-file-name)
-                   (abbreviate-file-name (buffer-file-name))
-                 "%b"))))
-    )
+          '((:eval (if (buffer-file-name)
+                       (abbreviate-file-name (buffer-file-name))
+                     "%b"))))
 
-)
+    (scroll-bar-mode 0)
+    (tool-bar-mode 0)
+    )
+  )
 
 ;; 前面一串"(if...lambda...(with-select-frame frame ())...)" 是个很好的函数框架
 ;; 是指 frame 创建后载入，用这个框架可以解决 --daemon 启动的问题
-
 (if (and (fboundp 'daemonp) (daemonp))
-  (add-hook 'after-make-frame-functions
-    (lambda (frame)
-      (with-selected-frame frame
-        (customize-gui-setting)
-        )
-      )
-    )
-  (customize-gui-setting)
-)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (with-selected-frame frame
+                  (customize-gui-setting))))
+  (customize-gui-setting))
 
 
 ;; custom
