@@ -1,6 +1,7 @@
 set titlestring=Firefox
 set focuscontent
 set gui=none,tabs
+set hlsearch
 set noautocomplete
 set suggestengines=''
 set status=input,ssl,location,tabcount,position
