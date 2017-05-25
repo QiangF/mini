@@ -72,8 +72,10 @@ export HISTTIMEFORMAT="%F %T "
 
 function _git_prompt {
 
+    ## http://www.opinionatedprogrammer.com/2011/01/colorful-bash-prompt-reflecting-git-status/
+
     ## XXX 旧版 ( centos 5 ) git 不支持 -u normal 参数
-    local git_status="`LANG=en_US.UTF-8 git status -unormal 2>&1`"
+    local git_status="$(LANG=en_US.UTF-8 git status -unormal 2>&1)"
 
     if ! [[ "$git_status" =~ Not\ a\ git\ repo ]]; then
         if [[ "$git_status" =~ nothing\ to\ commit ]]; then
@@ -87,8 +89,8 @@ function _git_prompt {
             branch=${BASH_REMATCH[1]}
             test "$branch" != master || branch=' '
         else
-            #branch="(`git branch --no-color 2> /dev/null|cut -d' ' -f2`)"
-            branch="(`git describe --all --contains --abbrev=4 HEAD 2> /dev/null || echo HEAD`)"
+            #branch="($(git branch --no-color 2> /dev/null|cut -d' ' -f2))"
+            branch="($(git describe --all --contains --abbrev=4 HEAD 2> /dev/null || echo HEAD))"
         fi
         echo -n '\[\e[0;37;'"$ansi"';1m\]'"$branch"'\[\e[0m\]'
     fi
@@ -97,17 +99,17 @@ function _git_prompt {
 ## XXX 单独使用 PS1，没有调用 PROMPT_COMMAND 函数
 ## 1. 不会时事更新 git 信息
 ## 2. [?] 是否动态修改 screen 标题栏
-#prompt_str="`_git_prompt`"'\w \n \$ '
+#prompt_str="$(_git_prompt)"'\w \n \$ '
 
 # XXX 使用 \[ ... \] 包裹 screen 标题栏的 目录 | vim 等程序才能正常显示
 if [[ ${EUID} == 0 ]] ; then
     ## 使用 '单引号' 引用，防止 '\$' 被 "双引号" 转义
     ## root use  ${PWD} absolute path
-    prompt_str=' \[\e[1;31m\]\u@${HOSTNAME} \[\e[01;34m\]${PWD} \n \$ '
+    prompt_str=' \[\e[1;31m\]\u@${HOSTNAME} \[\e[01;34m\]${PWD} \n \$\[\e[0m\] '
     ## sudo su - 切换到 root 用户 tmux title 格式 user@host path
     # path_title='\[\ek\u@\h:\w\e\\\]'
 else
-    prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$ '
+    prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$\[\e[0m\] '
     # path_title='\[\ek\W\e\\\]'
 fi
 
@@ -123,9 +125,9 @@ case "$TERM" in
     screen*)
 
         function ssh {
-            local ssh_args=`echo $1|sed 's:.*@::'`
+            local ssh_args="$(echo $1|sed 's:.*@::')"
             echo -n -e "\ek@${ssh_args}\e\\"
-            ## function rssh
+            ## function nssh
             nssh "$@"
         }
 
@@ -138,7 +140,7 @@ case "$TERM" in
 esac
 
 function _prompt_command {
-    PS1="`_git_prompt`"$prompt_str
+    PS1="$(_git_prompt)"$prompt_str
     ## 加粗输入的命令
     trap 'echo -ne "\e[0m"' DEBUG
 }

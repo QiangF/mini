@@ -22,6 +22,10 @@ set -g default-terminal "screen-256color"
 ## https://wiki.archlinux.org/index.php/tmux#Start_a_non-login_shell
 set -g default-command "${SHELL}"
 
+## http://opennomad.com/content/goodbye-screen-hello-tmux
+## https://unix.stackexchange.com/questions/75216/tmux-set-titles-doesnt-work
+#set -g terminal-overrides "xterm*:XT:smcup@:rmcup@"
+
 ## tmux set status-right " "#{=21:pane_title}" %F %H:%M"
 #set -g status-right " "#{=21:pane_title}" %H:%M %F"
 
