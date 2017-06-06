@@ -83,7 +83,7 @@ do
     # 过滤 README / build.ln.sh / ... 文件
     case $base_dotfile in
         ## XXX for 循环没有遍历 .* 隐藏文件
-        README*|.gitignore|ignore|*.bak|*.sh|*~|'#'*'#')
+        fonts.conf|README*|.gitignore|ignore|*.bak|*.sh|*~|'#'*'#')
             echo -e "\e[1;33m [S] 跳过 $dotfile 文件 \e[0m"
             continue
             ;;

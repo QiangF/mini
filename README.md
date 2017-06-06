@@ -34,7 +34,7 @@ mkdir -pv roles/dotfiles/{files,templates,tasks,handlers,vars,meta}
 echo 'localhost' >> ~/mini/hostfile
 ```
 
-#  ENV
+# ENV
 
 `ansible -m setup localhost` 获取 ansible 环境变量
 
@@ -87,7 +87,7 @@ $ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/p
 "ansible_os_family": "Gentoo",
 ```
 
-## centos 7
+## CentOS 7
 
 ```
 $ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/python2' -m setup|egrep -i 'distribution|os_family'
@@ -99,7 +99,7 @@ $ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/p
 "ansible_os_family": "RedHat",
 ```
 
-## fedora 23
+## Fedora 23
 
 ```
 $ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/python2' -m setup|egrep -i 'distribution|os_family'
@@ -110,6 +110,19 @@ $ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/p
 "ansible_distribution_version": "23",
 "ansible_os_family": "RedHat",
 ```
+
+## Fedora 26
+
+- Fedora 26 默认使用 Python 3
+- ansible 2.2 开始支持 Python 3 ：[Python 3 Support](https://docs.ansible.com/ansible/python_3_support.html)
+
+命令参数：
+
+    ansible-playbook -i 10.20.30.1, \
+                     -e 'ansible_ssh_port=2222' \
+                     -e 'ansible_python_interpreter=/usr/bin/python3' \
+                     -e 'desk=true' \
+                     -u $USER dotfiles.yml
 
 # debug
 

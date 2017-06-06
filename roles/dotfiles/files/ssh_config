@@ -1,6 +1,3 @@
-UseRoaming no
-ForwardAgent no
-GatewayPorts no
 StrictHostKeyChecking no
 UserKnownHostsFile /dev/null
 Compression no
@@ -15,5 +12,12 @@ Host github.com
     User git
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/id_rsa
+
+Host !10.12.13.1 10.12.13.*
+    User root
+    ProxyCommand ssh -W %h:%p root@10.12.13.1
+
+## socks5
+## ssh -NTfnq -D 7070 $USER@$HOSNAME
 
 # vim:set et ft=sshconfig fdm=marker sw=4 sts=4 ts=4 nopaste :

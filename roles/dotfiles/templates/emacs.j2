@@ -7,6 +7,16 @@
 ;; (setq truncate-lines t)
 
 
+;; package config
+;; ----------------------------------------------------------------------------------------
+;; http://ergoemacs.org/emacs/emacs_package_system.html
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(when (< emacs-major-version 24)
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
+
+
 ;; minor mode
 ;; ----------------------------------------------------------------------------------------
 (blink-cursor-mode 0)
@@ -208,18 +218,19 @@
 ;; package setting
 ;; ----------------------------------------------------------------------------------------
 
-;; ;; markdown
-;; (autoload 'markdown-mode "markdown-mode"
-;;   "Major mode for editing Markdown files" t)
-;; (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+;; markdown
+(autoload 'markdown-mode "markdown-mode"
+  "Major mode for editing Markdown files" t)
+
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.mk?d$\\'" . markdown-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.mkd$" . markdown-mode))
-;; ;; (add-to-list 'auto-mode-alist '("\\.mk?d\\'" . markdown-mode))
-;; ;; (add-hook 'markdown-mode-hook (lambda () (visual-line-mode t)))
+;; (add-hook 'markdown-mode-hook (lambda () (visual-line-mode t)))
 
-;; (autoload 'gfm-mode "markdown-mode"
-;;   "Major mode for editing GitHub Flavored Markdown files" t)
-;; (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+(autoload 'gfm-mode "markdown-mode"
+  "Major mode for editing GitHub Flavored Markdown files" t)
+(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
 
 
 ;; theme GUI font ...

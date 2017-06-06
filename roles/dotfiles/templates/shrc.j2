@@ -36,6 +36,10 @@ command ssh -o ConnectTimeout=2 \
 -o UserKnownHostsFile=/dev/null "$@"
 }
 
+function sshsocks {
+    command ssh -N2T4fnq -D 7070 "$@"
+}
+
 function ixio {
     ## cat - | curl -sF 'f:1=<-' ix.io
     ## <cmd> |& curl -F 'f:1=<-' ix.io
