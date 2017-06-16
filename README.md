@@ -99,6 +99,19 @@ $ ansible -i 'localhost,' all -c local -e 'ansible_python_interpreter=/usr/bin/p
 "ansible_os_family": "RedHat",
 ```
 
+## CentOS7 chroot
+
+启动 `sshd` 服务：
+
+    # /usr/sbin/sshd-keygen
+    Generating SSH2 RSA host key:                              [  OK  ]
+    Generating SSH2 ECDSA host key:                            [  OK  ]
+    Generating SSH2 ED25519 host key:                          [  OK  ]
+
+    # /usr/sbin/sshd
+
+    # ansible-playbook -i localhost, -e 'ansible_ssh_port=2222' dotfiles.yml
+
 ## Fedora 23
 
 ```

@@ -92,7 +92,10 @@ function _git_prompt {
             #branch="($(git branch --no-color 2> /dev/null|cut -d' ' -f2))"
             branch="($(git describe --all --contains --abbrev=4 HEAD 2> /dev/null || echo HEAD))"
         fi
-        echo -n '\[\e[0;37;'"$ansi"';1m\]'"$branch"'\[\e[0m\]'
+        echo -n ' \[\e[0;37;'"$ansi"';1m\]'"$branch"'\[\e[0m\]'
+        ##       ^
+        ##       |
+        ## NOTE: +-- 需要 **空格** 不然进入 git 目录后，色块之前会出现 `[`
     fi
 }
 
