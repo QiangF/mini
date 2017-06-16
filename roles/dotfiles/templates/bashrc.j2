@@ -105,11 +105,11 @@ function _git_prompt {
 if [[ ${EUID} == 0 ]] ; then
     ## 使用 '单引号' 引用，防止 '\$' 被 "双引号" 转义
     ## root use  ${PWD} absolute path
-    prompt_str=' \[\e[1;31m\]\u@${HOSTNAME} \[\e[01;34m\]${PWD} \n \$\[\e[0m\] '
+    prompt_str=' \[\e[1;31m\]\u@${HOSTNAME} \[\e[01;34m\]${PWD}\n \$\[\e[0m\] '
     ## sudo su - 切换到 root 用户 tmux title 格式 user@host path
     # path_title='\[\ek\u@\h:\w\e\\\]'
 else
-    prompt_str=' \[\e[1;34m\]${HOSTNAME} \w \n \[\e[1;32m\]\$\[\e[0m\] '
+    prompt_str=' \[\e[1;34m\]${HOSTNAME} \w\n \[\e[1;32m\]\$\[\e[0m\] '
     # path_title='\[\ek\W\e\\\]'
 fi
 
@@ -126,13 +126,13 @@ case "$TERM" in
 
         function ssh {
             local ssh_args="$(echo $1|sed 's:.*@::')"
-            echo -n -e "\ek@${ssh_args}\e\\"
+            echo -ne "\ek@${ssh_args}\e\\"
             ## function nssh
             nssh "$@"
         }
 
-        program_title='\[\ek\e\\\]'  # [?] 程序标题
-        prompt_str="${program_title}${path_title}${prompt_str}"
+        #program_title='\[\ek\e\\\]'  # [?] 程序标题
+        #prompt_str="${path_title}${prompt_str}"
 
         ;;
     *)
@@ -140,9 +140,24 @@ case "$TERM" in
 esac
 
 function _prompt_command {
-    PS1="$(_git_prompt)"$prompt_str
+
+	## CentOS7 /etc/bashrc
+    ## xterm:  printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+	## screen: printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"
+    case $TERM in
+        xterm*|vte*)
+            PS1=$(printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")"$(_git_prompt)"$prompt_str
+            ;;
+        screen*)
+            PS1=$(printf "\033k%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")"$(_git_prompt)"$prompt_str
+            ;;
+        *)
+            PS1="$(_git_prompt)"$prompt_str
+            ;;
+    esac
+
     ## 加粗输入的命令
-    trap 'echo -ne "\e[0m"' DEBUG
+    #trap 'echo -ne "\e[0m"' DEBUG
 }
 
 PROMPT_COMMAND=_prompt_command
